@@ -1,0 +1,67 @@
+[
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp    -o CMakeFiles/fly_square_gazebo.dir/src/fly_square_gazebo.cpp.o -c /home/user/uav_work/src/practice/src/fly_square_gazebo.cpp",
+  "file": "/home/user/uav_work/src/practice/src/fly_square_gazebo.cpp"
+},
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp    -o CMakeFiles/fly_square.dir/src/fly_square.cpp.o -c /home/user/uav_work/src/practice/src/fly_square.cpp",
+  "file": "/home/user/uav_work/src/practice/src/fly_square.cpp"
+},
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp    -o CMakeFiles/check_home.dir/src/check_home.cpp.o -c /home/user/uav_work/src/practice/src/check_home.cpp",
+  "file": "/home/user/uav_work/src/practice/src/check_home.cpp"
+},
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp    -o CMakeFiles/hoffb.dir/src/hoffb.cpp.o -c /home/user/uav_work/src/practice/src/hoffb.cpp",
+  "file": "/home/user/uav_work/src/practice/src/hoffb.cpp"
+},
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp    -o CMakeFiles/main.dir/src/main.cpp.o -c /home/user/uav_work/src/practice/src/main.cpp",
+  "file": "/home/user/uav_work/src/practice/src/main.cpp"
+},
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp    -o CMakeFiles/offb.dir/src/offb.cpp.o -c /home/user/uav_work/src/practice/src/offb.cpp",
+  "file": "/home/user/uav_work/src/practice/src/offb.cpp"
+},
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp    -o CMakeFiles/coordination_drift.dir/src/coordination_drift.cpp.o -c /home/user/uav_work/src/practice/src/coordination_drift.cpp",
+  "file": "/home/user/uav_work/src/practice/src/coordination_drift.cpp"
+},
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp    -o CMakeFiles/uav_acc.dir/src/uav_acc.cpp.o -c /home/user/uav_work/src/practice/src/uav_acc.cpp",
+  "file": "/home/user/uav_work/src/practice/src/uav_acc.cpp"
+},
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp    -o CMakeFiles/testfly.dir/src/testfly.cpp.o -c /home/user/uav_work/src/practice/src/testfly.cpp",
+  "file": "/home/user/uav_work/src/practice/src/testfly.cpp"
+},
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -Dpractice_EXPORTS -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -fPIC   -o CMakeFiles/practice.dir/src/lib/Uav.cpp.o -c /home/user/uav_work/src/practice/src/lib/Uav.cpp",
+  "file": "/home/user/uav_work/src/practice/src/lib/Uav.cpp"
+},
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -Dpractice_EXPORTS -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -fPIC   -o CMakeFiles/practice.dir/src/lib/controller.cpp.o -c /home/user/uav_work/src/practice/src/lib/controller.cpp",
+  "file": "/home/user/uav_work/src/practice/src/lib/controller.cpp"
+},
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp    -o CMakeFiles/test_uav.dir/src/test_uav.cpp.o -c /home/user/uav_work/src/practice/src/test_uav.cpp",
+  "file": "/home/user/uav_work/src/practice/src/test_uav.cpp"
+},
+{
+  "directory": "/home/user/uav_work/build/practice",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp    -o CMakeFiles/takeoff_n_land.dir/src/takeoff_n_land.cpp.o -c /home/user/uav_work/src/practice/src/takeoff_n_land.cpp",
+  "file": "/home/user/uav_work/src/practice/src/takeoff_n_land.cpp"
+}
+]

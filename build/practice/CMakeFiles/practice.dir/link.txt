@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC   -shared -Wl,-soname,libpractice.so -o /home/user/uav_work/devel/lib/libpractice.so CMakeFiles/practice.dir/src/lib/Uav.cpp.o CMakeFiles/practice.dir/src/lib/controller.cpp.o 

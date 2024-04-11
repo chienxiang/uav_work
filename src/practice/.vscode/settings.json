@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "string_view": "cpp",
+        "regex": "cpp",
+        "tuple": "cpp"
+    },
+    "python.autoComplete.extraPaths": [
+        "/home/user/catkin_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
+}

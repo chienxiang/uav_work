@@ -1,0 +1,2 @@
+ardupilot:practice:realsense_ros_gazebo
+-DCATKIN_DEVEL_PREFIX=/home/user/uav_work/devel -DCMAKE_INSTALL_PREFIX=/home/user/uav_work/install -G Unix Makefiles
