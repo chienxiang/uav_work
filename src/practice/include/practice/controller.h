@@ -24,7 +24,6 @@ class Controller
         float Kp=0.35,Ki=0.65,Kd=0.005,ed[3][3]={0},ed1[3][3]={0},ed2[3][3]={0},limitV=3;
     public:
         practice::information Cuav[3],Fuav[3],Nuav[3];
-        vector<float> Cuav,Fuav,Nuav;
         float uav_dis[3],aij[3]={1.5,2,1},Ftot[3]={0},F[3]={0},Fcenter[3]={0,0,5};
         float duav0[3]={-3/sqrt(3),0,5},duav1[3]={1.5/sqrt(3),-1.5,5},duav2[3]={1.5/sqrt(3),1.5,5};
         float deltax,deltay,deltaz;

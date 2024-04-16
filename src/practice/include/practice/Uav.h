@@ -82,7 +82,7 @@ class Uav
         std::vector<float> drifting;
         int well,mode,mode_detect=0,uav_id;
         float px,py,pz,vx,vy,vz,ax,ay,az,Opx,Opy,Opz,yaw_t,avoid[3],tmp;
-        float driftX=0,driftY=0,home_driftX=0,home_driftY=0;
+        float driftX=0,driftY=0,home_driftX=0,home_driftY=0,home_driftZ=0;
         float latitude; //經度
         float longitude; //緯度
 };

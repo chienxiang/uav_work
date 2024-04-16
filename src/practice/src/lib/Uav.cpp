@@ -37,7 +37,7 @@ void Uav::subpose_origin(const geometry_msgs::PoseStamped::ConstPtr &msg)
 }
 void Uav::subpose_compensate(const geometry_msgs::PoseStamped::ConstPtr &msg)
 {   
-    px=msg->pose.position.x + driftX - home_driftX;  py=msg->pose.position.y + driftY - home_driftY;  pz=msg->pose.position.z;
+    px=msg->pose.position.x + driftX - home_driftX;  py=msg->pose.position.y + driftY - home_driftY;  pz=msg->pose.position.z - home_driftZ;
 }
 void Uav::subvel(const  geometry_msgs::TwistStamped::ConstPtr &msg)
 {
@@ -82,6 +82,7 @@ void Uav::init()
     set_mode_offb();
     set_arm_cmd();
     uav_drifting();
+
 }
 
 void Uav::enable_offboard()
@@ -110,7 +111,7 @@ void Uav::landing()
         ros::spinOnce();    
     } 
 }
-int Uav::uav_drifting()
+int Uav::uav_drifting() 
 {
     ifs.open("./src/practice/src/coordination_shifting.txt");
     if (!ifs.is_open()) 
@@ -143,7 +144,9 @@ int Uav::uav_drifting()
         driftY=0;
         home_driftX = drifting[4];
         home_driftY = drifting[5];
+        
     }
+    home_driftZ = Opz;
 
 }
 void Uav::data_update()
@@ -161,7 +164,7 @@ void Uav::pub_position(float x,float y,float z)
     PositionTarget.coordinate_frame = 1;
     PositionTarget.position.x = x - driftX + home_driftX;
     PositionTarget.position.y = y - driftY + home_driftY;
-    PositionTarget.position.z = z;
+    PositionTarget.position.z = z + home_driftZ;
     PositionTarget_pub.publish(PositionTarget);
 }
 void Uav::pub_position(float x,float y,float z,float rad)
@@ -170,7 +173,7 @@ void Uav::pub_position(float x,float y,float z,float rad)
     PositionTarget.coordinate_frame = 1;
     PositionTarget.position.x = x - driftX + home_driftX;
     PositionTarget.position.y = y - driftY + home_driftY;
-    PositionTarget.position.z = z;
+    PositionTarget.position.z = z + home_driftZ;
     PositionTarget.yaw = rad;
     PositionTarget_pub.publish(PositionTarget); 
 }

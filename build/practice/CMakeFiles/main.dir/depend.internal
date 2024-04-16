@@ -5,6 +5,7 @@ practice/CMakeFiles/main.dir/src/main.cpp.o
  /home/user/uav_work/devel/include/practice/information.h
  /home/user/uav_work/src/practice/include/coordination_transfer.h
  /home/user/uav_work/src/practice/include/practice/Uav.h
+ /home/user/uav_work/src/practice/include/practice/controller.h
  /home/user/uav_work/src/practice/src/main.cpp
  /opt/ros/noetic/include/geometry_msgs/Point.h
  /opt/ros/noetic/include/geometry_msgs/Pose.h
