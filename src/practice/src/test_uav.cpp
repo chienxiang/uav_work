@@ -74,9 +74,9 @@ int main(int argc, char **argv)
                     uav1.data_update();
                     uav2.data_update();
 
-                    controller.data_update(uav0.inf,uav1.inf,uav2.inf);
-                    controller.update_center(path[j],path[j+1],path[j+2]);
-                    controller.follower();
+                    // controller.data_update(uav0.inf,uav1.inf,uav2.inf);
+                    // controller.update_center(path[j],path[j+1],path[j+2]);
+                    // controller.follower();
                     uav0.pub_velocity(controller.Fuav[0].vel.x,controller.Fuav[0].vel.y,controller.Fuav[0].vel.z);
                     uav1.pub_velocity(controller.Fuav[1].vel.x,controller.Fuav[1].vel.y,controller.Fuav[1].vel.z);
                     uav2.pub_velocity(controller.Fuav[2].vel.x,controller.Fuav[2].vel.y,controller.Fuav[2].vel.z);
@@ -120,8 +120,8 @@ int main(int argc, char **argv)
                     uav1.data_update();
                     uav2.data_update();
 
-                    controller.data_update(uav0.inf,uav1.inf,uav2.inf);
-                    controller.process();
+                    // controller.data_update(uav0.inf,uav1.inf,uav2.inf);
+                    // controller.process();
                     if(dis>tgt)
                     {   
                         dis=dis-i;
@@ -168,9 +168,9 @@ int main(int argc, char **argv)
                     uav1.data_update();
                     uav2.data_update();
 
-                    controller.data_update(uav0.inf,uav1.inf,uav2.inf);
-                    controller.update_center(path[j],path[j+1],path[j+2]);
-                    controller.null_space_behavior();
+                    // controller.data_update(uav0.inf,uav1.inf,uav2.inf);
+                    // controller.update_center(path[j],path[j+1],path[j+2]);
+                    // controller.null_space_behavior();
                     uav0.pub_velocity(controller.Nuav[0].vel.x,controller.Nuav[0].vel.y,controller.Nuav[0].vel.z);
                     uav1.pub_velocity(controller.Nuav[1].vel.x,controller.Nuav[1].vel.y,controller.Nuav[1].vel.z);
                     uav2.pub_velocity(controller.Nuav[2].vel.x,controller.Nuav[2].vel.y,controller.Nuav[2].vel.z);

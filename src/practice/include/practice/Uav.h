@@ -15,8 +15,9 @@
 #include <math.h>
 #include <complex>
 #include "practice/information.h"
+#include <Eigen/Dense>
 using namespace std;
-
+using namespace Eigen;
 class Uav
 {
     public:
@@ -73,6 +74,9 @@ class Uav
         mavros_msgs::CommandTOL land_cmd;
         sensor_msgs::NavSatFix NavSatStatus;
         practice::information inf;
+        RowVector3f p_data = RowVector3f::Zero(1,3); //uav information of position
+        RowVector3f v_data = RowVector3f::Zero(1,3); //uav information of velocity
+          
 
         ros::NodeHandle nh;
         //the setpoint publishing rate MUST be faster than 2Hz

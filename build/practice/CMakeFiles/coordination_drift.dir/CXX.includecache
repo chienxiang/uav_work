@@ -75,6 +75,8 @@ complex
 -
 practice/information.h
 /home/user/uav_work/src/practice/include/practice/practice/information.h
+Eigen/Dense
+-
 
 /home/user/uav_work/src/practice/src/coordination_drift.cpp
 practice/Uav.h

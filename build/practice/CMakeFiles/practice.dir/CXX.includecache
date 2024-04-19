@@ -41,8 +41,12 @@ mavros_msgs/CommandTOL.h
 -
 iostream
 -
+vector
+-
 practice/information.h
 /home/user/uav_work/src/practice/include/practice/practice/information.h
+Eigen/Dense
+-
 
 /home/user/uav_work/src/practice/src/lib/controller.cpp
 practice/controller.h

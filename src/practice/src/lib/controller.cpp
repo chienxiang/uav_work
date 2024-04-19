@@ -1,102 +1,85 @@
 #include "practice/controller.h"
 
-float Controller::discal(practice::information d1 ,practice::information d2)
+void Controller::cal_position_norm()
 {
-    float dis = sqrt(pow(d1.point.x - d2.point.x ,2) + \
-                     pow(d1.point.y - d2.point.y ,2) + \
-                     pow(d1.point.z - d2.point.z ,2));
-    return dis;
-}
-void Controller::data_update(practice::information s1 , \
-                             practice::information s2 , \
-                             practice::information s3)
-{
-    Nuav[0].point.x = Fuav[0].point.x = Cuav[0].point.x = s1.point.x;
-    Nuav[0].point.y = Fuav[0].point.y = Cuav[0].point.y = s1.point.y;
-    Nuav[0].point.z = Fuav[0].point.z = Cuav[0].point.z = s1.point.z;
-    Nuav[0].vel.x = Fuav[0].vel.x = Cuav[0].vel.x = s1.vel.x;
-    Nuav[0].vel.y = Fuav[0].vel.y = Cuav[0].vel.y = s1.vel.y;
-    Nuav[0].vel.z = Fuav[0].vel.z = Cuav[0].vel.z = s1.vel.z;
-
-    Nuav[1].point.x = Fuav[1].point.x = Cuav[1].point.x = s2.point.x;
-    Nuav[1].point.y = Fuav[1].point.y = Cuav[1].point.y = s2.point.y;
-    Nuav[1].point.z = Fuav[1].point.z = Cuav[1].point.z = s2.point.z;
-    Nuav[1].vel.x = Fuav[1].vel.x = Cuav[1].vel.x = s2.vel.x;
-    Nuav[1].vel.y = Fuav[1].vel.y = Cuav[1].vel.y = s2.vel.y;
-    Nuav[1].vel.z = Fuav[1].vel.z = Cuav[1].vel.z = s2.vel.z;
-
-    Nuav[2].point.x = Fuav[2].point.x = Cuav[2].point.x = s3.point.x;
-    Nuav[2].point.y = Fuav[2].point.y = Cuav[2].point.y = s3.point.y;
-    Nuav[2].point.z = Fuav[2].point.z = Cuav[2].point.z = s3.point.z;
-    Nuav[2].vel.x = Fuav[2].vel.x = Cuav[2].vel.x = s3.vel.x;
-    Nuav[2].vel.y = Fuav[2].vel.y = Cuav[2].vel.y = s3.vel.y;
-    Nuav[2].vel.z = Fuav[2].vel.z = Cuav[2].vel.z = s3.vel.z;
+    P_norm(0)= (U1p - U0p).norm(); //10
+    P_norm(1)= (U2p - U0p).norm();; //20
+    P_norm(2)= (U1p - U2p).norm();; //12
 
 }
-void Controller::cacl_k()
+void Controller::cal_velocity_norm()
 {
-    kij = (1/pre_dis)*(1/pow(exp(pre_dis)-exp(uav_dis_min),2)*exp(pre_dis));
+    V_norm(0)= (U0v - U1v).norm(); //01
+    V_norm(1)= (U0v - U2v).norm(); //02
+    V_norm(2)= (U1v - U2v).norm(); //12
 }
-float Controller::exact_range(float dis)
+void Controller::data_update(RowVector3f u0p ,RowVector3f u1p,RowVector3f u2p ,RowVector3f u0v,RowVector3f u1v ,RowVector3f u2v)
 {
-    float ftot;
-    if(dis>uav_dis_min && dis<r1) //req       
+    U0p = u0p;
+    U1p = u1p;
+    U2p = u2p;
+    U0v = u0v;
+    U1v = u1v;
+    U2v = u2v;
+}
+void Controller::cacl_delta()
+{
+    delta(0) = acos((U1p - U0p).dot(U0v - U1v)/P_norm(0)*V_norm(0)); //01   
+    delta(1) = acos((U2p - U0p).dot(U0v - U2v)/P_norm(1)*V_norm(1)); //02
+    delta(2) = acos((U0p - U1p).dot(U1v - U0v)/P_norm(0)*V_norm(0)); //10
+    delta(3) = acos((U2p - U1p).dot(U1v - U2v)/P_norm(2)*V_norm(2)); //12
+    delta(4) = acos((U0p - U2p).dot(U2v - U0v)/P_norm(1)*V_norm(1)); //20
+    delta(5) = acos((U1p - U2p).dot(U2v - U1v)/P_norm(2)*V_norm(2)); //21
+}
+void Controller::cacl_collision_free_region()
+{
+    OM(0) = V_norm(0)*cos(beta); //01
+    OM(1) = V_norm(1)*cos(beta); //02   
+    OM(2) = V_norm(2)*cos(beta); //12
+
+}
+void Controller::safe_range()
+{
+    int j=0;
+    for(int i = 0; i <6;i++)
     {
-        ftot = repulsive_potential(dis);
+        if(i == 0 || i == 1)
+            j=0;
+        else if(i == 2 || i == 3)
+            j=1;
+        else
+            j=2;
+
+        if((delta(i) > 0 && delta(i) < beta) || (delta(i) > -beta && delta(i) < 0)) //rvar
+        {
+            rsafe(i) = kv/(kw+wmax)*V_norm(j)*cos(delta(i));
+        }
+        else if((delta(i) >= beta && delta(i) <= 90+theta) || (delta(i) >= -90-theta && delta(i) < -beta)) //rconnect
+        {
+
+        }
+        else
+        {
+            rsafe(i)=rmin;
+        }
     }
-    else if(dis>=r1 && dis<=r2)//balance
-    {
-        ftot = 0;
-    }
-    else if(dis>r2 && dis<uav_dis_max)//att
-    {            
-        ftot = attractive_potential(dis);
-    }
-    else 
-    {
-        ftot = 0;
-    }
-    return ftot;
+
+}
+float Controller::cacl_threat_level(practice::information t1 ,practice::information t2)
+{
+    
 }
 float Controller::repulsive_potential(float dis)
 {
-    float freq = (1/pow(exp(dis)-exp(uav_dis_min),2)*exp(dis));
-    return freq;
+
 }
 float Controller::attractive_potential(float dis)
 {
-    float fatt = -kij*dis;
-    return fatt;
+
 }
 void Controller::virtual_vel()
 {
-    // //u1=u12+u13
-    // Cuav[0].vel.x = aij[1]*F[0]*(Cuav[0].point.x - Cuav[1].point.x)/uav_dis[0] + aij[1]*F[1]*(Cuav[0].point.x - Cuav[2].point.x)/uav_dis[1] + Cuav[0].vel.x; 
-    // Cuav[0].vel.y = aij[1]*F[0]*(Cuav[0].point.y - Cuav[1].point.y)/uav_dis[0] + aij[1]*F[1]*(Cuav[0].point.y - Cuav[2].point.y)/uav_dis[1] + Cuav[0].vel.y;
-    // Cuav[0].vel.z = aij[1]*F[0]*(Cuav[0].point.z - Cuav[1].point.z)/uav_dis[0] + aij[1]*F[1]*(Cuav[0].point.z - Cuav[2].point.z)/uav_dis[1] + Cuav[0].vel.z;
-    // //u2=u21+u23
-    // Cuav[1].vel.x = aij[0]*F[0]*(Cuav[1].point.x - Cuav[0].point.x)/uav_dis[0] + aij[2]*F[2]*(Cuav[1].point.x - Cuav[2].point.x)/uav_dis[2] + Cuav[1].vel.x; 
-    // Cuav[1].vel.y = aij[0]*F[0]*(Cuav[1].point.y - Cuav[0].point.y)/uav_dis[0] + aij[2]*F[2]*(Cuav[1].point.y - Cuav[2].point.y)/uav_dis[2] + Cuav[1].vel.y;
-    // Cuav[1].vel.z = aij[0]*F[0]*(Cuav[1].point.z - Cuav[0].point.z)/uav_dis[0] + aij[2]*F[2]*(Cuav[1].point.z - Cuav[2].point.z)/uav_dis[2] + Cuav[1].vel.z;
-
-    // //u3=u31+u32
-    // Cuav[2].vel.x = aij[0]*F[1]*(Cuav[2].point.x - Cuav[0].point.x)/uav_dis[1] + aij[2]*F[2]*(Cuav[2].point.x - Cuav[1].point.x)/uav_dis[2] + Cuav[2].vel.x; 
-    // Cuav[2].vel.y = aij[0]*F[1]*(Cuav[2].point.y - Cuav[0].point.y)/uav_dis[1] + aij[2]*F[2]*(Cuav[2].point.y - Cuav[1].point.y)/uav_dis[2] + Cuav[2].vel.y;
-    // Cuav[2].vel.z = aij[0]*F[1]*(Cuav[2].point.z - Cuav[0].point.z)/uav_dis[1] + aij[2]*F[2]*(Cuav[2].point.z - Cuav[1].point.z)/uav_dis[2] + Cuav[2].vel.z;
-
-    //u1=u12+u13
-    Cuav[0].vel.x = aij[1]*F[0]*(Cuav[0].point.x - Cuav[1].point.x)/uav_dis[0] + aij[1]*F[1]*(Cuav[0].point.x - Cuav[2].point.x)/uav_dis[1]; 
-    Cuav[0].vel.y = aij[1]*F[0]*(Cuav[0].point.y - Cuav[1].point.y)/uav_dis[0] + aij[1]*F[1]*(Cuav[0].point.y - Cuav[2].point.y)/uav_dis[1];
-    Cuav[0].vel.z = aij[1]*F[0]*(Cuav[0].point.z - Cuav[1].point.z)/uav_dis[0] + aij[1]*F[1]*(Cuav[0].point.z - Cuav[2].point.z)/uav_dis[1];
-    //u2=u21+u23
-    Cuav[1].vel.x = aij[0]*F[0]*(Cuav[1].point.x - Cuav[0].point.x)/uav_dis[0] + aij[2]*F[2]*(Cuav[1].point.x - Cuav[2].point.x)/uav_dis[2]; 
-    Cuav[1].vel.y = aij[0]*F[0]*(Cuav[1].point.y - Cuav[0].point.y)/uav_dis[0] + aij[2]*F[2]*(Cuav[1].point.y - Cuav[2].point.y)/uav_dis[2];
-    Cuav[1].vel.z = aij[0]*F[0]*(Cuav[1].point.z - Cuav[0].point.z)/uav_dis[0] + aij[2]*F[2]*(Cuav[1].point.z - Cuav[2].point.z)/uav_dis[2];
-
-    //u3=u31+u32
-    Cuav[2].vel.x = aij[0]*F[1]*(Cuav[2].point.x - Cuav[0].point.x)/uav_dis[1] + aij[2]*F[2]*(Cuav[2].point.x - Cuav[1].point.x)/uav_dis[2]; 
-    Cuav[2].vel.y = aij[0]*F[1]*(Cuav[2].point.y - Cuav[0].point.y)/uav_dis[1] + aij[2]*F[2]*(Cuav[2].point.y - Cuav[1].point.y)/uav_dis[2];
-    Cuav[2].vel.z = aij[0]*F[1]*(Cuav[2].point.z - Cuav[0].point.z)/uav_dis[1] + aij[2]*F[2]*(Cuav[2].point.z - Cuav[1].point.z)/uav_dis[2];
+    
 }
 float Controller::max_vel(float a1,float a2,float a3)
 {
@@ -110,19 +93,34 @@ float Controller::max_vel(float a1,float a2,float a3)
     }
     return max; 
 }
-void Controller::scale_down()
+// void Controller::scale_down()
+// {
+//     float scale=1;
+//     for(int i=0;i<3;i++)
+//     {
+//         if(Cuav[i].vel.x > max_v || Cuav[i].vel.y > max_v || Cuav[i].vel.z > max_v)
+//         {
+//             scale = max_vel(Cuav[i].vel.x,Cuav[i].vel.y,Cuav[i].vel.z);               
+//         }
+//         Cuav[i].vel.x = Cuav[i].vel.x/scale;
+//         Cuav[i].vel.y = Cuav[i].vel.y/scale;
+//         Cuav[i].vel.z = Cuav[i].vel.z/scale;
+//     } 
+// }
+void Controller::process()
 {
-    float scale=1;
-    for(int i=0;i<3;i++)
-    {
-        if(Cuav[i].vel.x > max_v || Cuav[i].vel.y > max_v || Cuav[i].vel.z > max_v)
-        {
-            scale = max_vel(Cuav[i].vel.x,Cuav[i].vel.y,Cuav[i].vel.z);               
-        }
-        Cuav[i].vel.x = Cuav[i].vel.x/scale;
-        Cuav[i].vel.y = Cuav[i].vel.y/scale;
-        Cuav[i].vel.z = Cuav[i].vel.z/scale;
-    } 
+    // position_norm[0] = discal(Cuav[0],Cuav[1]);//12
+    // position_norm[1] = discal(Cuav[0],Cuav[2]);//13
+    // position_norm[2] = discal(Cuav[1],Cuav[2]);//23
+    // vel_norm[0] = 
+    // vel_norm[1]
+    // vel_norm[2]
+    // uav_delta[0] = cacl_delta(Cuav[0],Cuav[1]); //12
+    // uav_delta[1] = cacl_delta(Cuav[1],Cuav[0]); //21
+    // uav_delta[2] = cacl_delta(Cuav[1],Cuav[2]); //13
+    // uav_delta[3] = cacl_delta(Cuav[2],Cuav[1]); //31
+    // uav_delta[4] = cacl_delta(Cuav[1],Cuav[2]); //23
+    // uav_delta[5] = cacl_delta(Cuav[2],Cuav[1]); //32
 }
 void Controller::update_center(float x,float y,float z)
 {
@@ -246,73 +244,62 @@ void Controller::cal_desire_point()
     duav2[1] += deltay;
     duav2[2] += deltaz;   
 }  
-void Controller::process()
-{
-    uav_dis[0] = discal(Cuav[0],Cuav[1]);//12
-    uav_dis[1] = discal(Cuav[0],Cuav[2]);//13
-    uav_dis[2] = discal(Cuav[1],Cuav[2]);//23
-    for(int i=0;i<3;i++)
-    {
-        F[i] = exact_range(uav_dis[i]);
-    }
-    virtual_vel();
-}
 void Controller::null_space_behavior()
 {
-    process();
-    follower();
-    float P[3][3],N1[3][3],N2[3][3],N3[3][3];
-    P[0][0] = (Nuav[0].point.x-Nuav[1].point.x)/uav_dis[0] + (Nuav[0].point.x-Nuav[2].point.x)/uav_dis[1];
-    P[0][1] = (Nuav[0].point.y-Nuav[1].point.y)/uav_dis[0] + (Nuav[0].point.y-Nuav[2].point.y)/uav_dis[1];
-    P[0][2] = (Nuav[0].point.z-Nuav[1].point.z)/uav_dis[0] + (Nuav[0].point.z-Nuav[2].point.z)/uav_dis[1];
+    // process();
+    // follower();
+    // float P[3][3],N1[3][3],N2[3][3],N3[3][3];
+    // P[0][0] = (Nuav[0].point.x-Nuav[1].point.x)/uav_dis[0] + (Nuav[0].point.x-Nuav[2].point.x)/uav_dis[1];
+    // P[0][1] = (Nuav[0].point.y-Nuav[1].point.y)/uav_dis[0] + (Nuav[0].point.y-Nuav[2].point.y)/uav_dis[1];
+    // P[0][2] = (Nuav[0].point.z-Nuav[1].point.z)/uav_dis[0] + (Nuav[0].point.z-Nuav[2].point.z)/uav_dis[1];
 
-    P[1][0] = (Nuav[1].point.x-Nuav[0].point.x)/uav_dis[0] + (Nuav[1].point.x-Nuav[2].point.x)/uav_dis[2];
-    P[1][1] = (Nuav[1].point.y-Nuav[0].point.y)/uav_dis[0] + (Nuav[1].point.y-Nuav[2].point.y)/uav_dis[2];
-    P[1][2] = (Nuav[1].point.z-Nuav[0].point.z)/uav_dis[0] + (Nuav[1].point.z-Nuav[2].point.z)/uav_dis[2];
+    // P[1][0] = (Nuav[1].point.x-Nuav[0].point.x)/uav_dis[0] + (Nuav[1].point.x-Nuav[2].point.x)/uav_dis[2];
+    // P[1][1] = (Nuav[1].point.y-Nuav[0].point.y)/uav_dis[0] + (Nuav[1].point.y-Nuav[2].point.y)/uav_dis[2];
+    // P[1][2] = (Nuav[1].point.z-Nuav[0].point.z)/uav_dis[0] + (Nuav[1].point.z-Nuav[2].point.z)/uav_dis[2];
 
-    P[2][0] = (Nuav[2].point.x-Nuav[0].point.x)/uav_dis[1] + (Nuav[2].point.x-Nuav[1].point.x)/uav_dis[2];
-    P[2][1] = (Nuav[2].point.y-Nuav[0].point.y)/uav_dis[1] + (Nuav[2].point.y-Nuav[1].point.y)/uav_dis[2];
-    P[2][2] = (Nuav[2].point.z-Nuav[0].point.z)/uav_dis[1] + (Nuav[2].point.z-Nuav[1].point.z)/uav_dis[2];
+    // P[2][0] = (Nuav[2].point.x-Nuav[0].point.x)/uav_dis[1] + (Nuav[2].point.x-Nuav[1].point.x)/uav_dis[2];
+    // P[2][1] = (Nuav[2].point.y-Nuav[0].point.y)/uav_dis[1] + (Nuav[2].point.y-Nuav[1].point.y)/uav_dis[2];
+    // P[2][2] = (Nuav[2].point.z-Nuav[0].point.z)/uav_dis[1] + (Nuav[2].point.z-Nuav[1].point.z)/uav_dis[2];
 
-    N1[0][0]=1-P[0][0]*P[0][0];
-    N1[0][1]=P[0][0]*P[0][1];
-    N1[0][2]=P[0][0]*P[0][2];
-    N1[1][0]=P[0][0]*P[0][1];
-    N1[1][1]=1-P[0][1]*P[0][1];
-    N1[1][2]=P[0][1]*P[0][2];
-    N1[2][0]=P[0][0]*P[0][2];
-    N1[2][1]=P[0][1]*P[0][2];
-    N1[2][2]=1-P[0][2]*P[0][2];
+    // N1[0][0]=1-P[0][0]*P[0][0];
+    // N1[0][1]=P[0][0]*P[0][1];
+    // N1[0][2]=P[0][0]*P[0][2];
+    // N1[1][0]=P[0][0]*P[0][1];
+    // N1[1][1]=1-P[0][1]*P[0][1];
+    // N1[1][2]=P[0][1]*P[0][2];
+    // N1[2][0]=P[0][0]*P[0][2];
+    // N1[2][1]=P[0][1]*P[0][2];
+    // N1[2][2]=1-P[0][2]*P[0][2];
 
-    N2[0][0]=1-P[1][0]*P[1][0];
-    N2[0][1]=P[1][0]*P[1][1];
-    N2[0][2]=P[1][0]*P[1][2];
-    N2[1][0]=P[1][0]*P[1][1];
-    N2[1][1]=1-P[1][1]*P[1][1];
-    N2[1][2]=P[1][1]*P[1][2];
-    N2[2][0]=P[1][0]*P[1][2];
-    N2[2][1]=P[1][1]*P[1][2];
-    N2[2][2]=1-P[1][2]*P[1][2];
+    // N2[0][0]=1-P[1][0]*P[1][0];
+    // N2[0][1]=P[1][0]*P[1][1];
+    // N2[0][2]=P[1][0]*P[1][2];
+    // N2[1][0]=P[1][0]*P[1][1];
+    // N2[1][1]=1-P[1][1]*P[1][1];
+    // N2[1][2]=P[1][1]*P[1][2];
+    // N2[2][0]=P[1][0]*P[1][2];
+    // N2[2][1]=P[1][1]*P[1][2];
+    // N2[2][2]=1-P[1][2]*P[1][2];
 
-    N3[0][0]=1-P[2][0]*P[2][0];
-    N3[0][1]=P[2][0]*P[2][1];
-    N3[0][2]=P[2][0]*P[2][2];
-    N3[1][0]=P[2][0]*P[2][1];
-    N3[1][1]=1-P[2][1]*P[2][1];
-    N3[1][2]=P[2][1]*P[2][2];
-    N3[2][0]=P[2][0]*P[2][2];
-    N3[2][1]=P[2][1]*P[2][2];
-    N3[2][2]=1-P[2][2]*P[2][2];
+    // N3[0][0]=1-P[2][0]*P[2][0];
+    // N3[0][1]=P[2][0]*P[2][1];
+    // N3[0][2]=P[2][0]*P[2][2];
+    // N3[1][0]=P[2][0]*P[2][1];
+    // N3[1][1]=1-P[2][1]*P[2][1];
+    // N3[1][2]=P[2][1]*P[2][2];
+    // N3[2][0]=P[2][0]*P[2][2];
+    // N3[2][1]=P[2][1]*P[2][2];
+    // N3[2][2]=1-P[2][2]*P[2][2];
 
-    Nuav[0].vel.x = Cuav[0].vel.x+Fuav[0].vel.x*(N1[0][0]+N1[0][1]+N1[0][2]);
-    Nuav[0].vel.y = Cuav[0].vel.y+Fuav[0].vel.y*(N1[1][0]+N1[1][1]+N1[1][2]);
-    Nuav[0].vel.z = Cuav[0].vel.z+Fuav[0].vel.z*(N1[2][0]+N1[2][1]+N1[2][2]);
+    // Nuav[0].vel.x = Cuav[0].vel.x+Fuav[0].vel.x*(N1[0][0]+N1[0][1]+N1[0][2]);
+    // Nuav[0].vel.y = Cuav[0].vel.y+Fuav[0].vel.y*(N1[1][0]+N1[1][1]+N1[1][2]);
+    // Nuav[0].vel.z = Cuav[0].vel.z+Fuav[0].vel.z*(N1[2][0]+N1[2][1]+N1[2][2]);
 
-    Nuav[1].vel.x = Cuav[1].vel.x+Fuav[1].vel.x*(N2[0][0]+N2[0][1]+N2[0][2]);
-    Nuav[1].vel.y = Cuav[1].vel.y+Fuav[1].vel.y*(N2[1][0]+N2[1][1]+N2[1][2]);
-    Nuav[1].vel.z = Cuav[1].vel.z+Fuav[1].vel.z*(N2[2][0]+N2[2][1]+N2[2][2]);
+    // Nuav[1].vel.x = Cuav[1].vel.x+Fuav[1].vel.x*(N2[0][0]+N2[0][1]+N2[0][2]);
+    // Nuav[1].vel.y = Cuav[1].vel.y+Fuav[1].vel.y*(N2[1][0]+N2[1][1]+N2[1][2]);
+    // Nuav[1].vel.z = Cuav[1].vel.z+Fuav[1].vel.z*(N2[2][0]+N2[2][1]+N2[2][2]);
 
-    Nuav[2].vel.x = Cuav[2].vel.x+Fuav[2].vel.x*(N3[0][0]+N3[0][1]+N3[0][2]);
-    Nuav[2].vel.y = Cuav[2].vel.y+Fuav[2].vel.y*(N3[1][0]+N3[1][1]+N3[1][2]);
-    Nuav[2].vel.z = Cuav[2].vel.z+Fuav[2].vel.z*(N3[2][0]+N3[2][1]+N3[2][2]);
+    // Nuav[2].vel.x = Cuav[2].vel.x+Fuav[2].vel.x*(N3[0][0]+N3[0][1]+N3[0][2]);
+    // Nuav[2].vel.y = Cuav[2].vel.y+Fuav[2].vel.y*(N3[1][0]+N3[1][1]+N3[1][2]);
+    // Nuav[2].vel.z = Cuav[2].vel.z+Fuav[2].vel.z*(N3[2][0]+N3[2][1]+N3[2][2]);
 }
