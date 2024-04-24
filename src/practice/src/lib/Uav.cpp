@@ -151,13 +151,8 @@ int Uav::uav_drifting()
 }
 void Uav::data_update()
 {
-    p_data(0,0) = px;
-    p_data(0,1) = py;
-    p_data(0,2) = pz;
-
-    v_data(0,0) = vx;
-    v_data(0,1) = vy;
-    v_data(0,2) = vz;
+    p_data << px,py,pz;
+    v_data << vx,vy,vz;
 }
 void Uav::pub_position(float x,float y,float z)
 {
