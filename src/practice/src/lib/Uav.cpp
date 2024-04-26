@@ -1,6 +1,6 @@
 #include "practice/Uav.h"
 #include <string>
-Uav::Uav(int id):nh(), rate(20.0)
+Uav::Uav(int id):nh(), rate(100.0)
 {
     std::string name = "/uav" + std::to_string(id);
 
@@ -125,16 +125,20 @@ int Uav::uav_drifting()
     }
     ifs.close();
     if(uav_id == 1)
-    {     
-        driftX=drifting[0];
-        driftY=drifting[1];
+    {
+        driftX=3;
+        driftY=0;     
+        // driftX=drifting[0];
+        // driftY=drifting[1];
         home_driftX = drifting[6];
         home_driftY = drifting[7];
     }
     else if(uav_id == 2)
     {
-        driftX=drifting[2];
-        driftY=drifting[3];
+        driftX=0;
+        driftY=3;
+        // driftX=drifting[2];
+        // driftY=drifting[3];
         home_driftX = drifting[8];
         home_driftY = drifting[9];        
     }
@@ -151,7 +155,7 @@ int Uav::uav_drifting()
 }
 void Uav::data_update()
 {
-    p_data << px,py,pz;
+    p_data << px,py,pz;    
     v_data << vx,vy,vz;
 }
 void Uav::pub_position(float x,float y,float z)

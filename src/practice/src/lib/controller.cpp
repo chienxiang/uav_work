@@ -8,9 +8,9 @@ std::tuple<float, float> Controller::cal_position_norm(int i,int j,int k) //uav 
 }
 std::tuple<float, float> Controller::cal_velocity_norm(int i,int j,int k) //uav velocity norm
 {
-    float vp1 = (Uav.col(i+3) - Uav.col(j+3)).norm();
-    float vp2 = (Uav.col(i+3) - Uav.col(k+3)).norm();
-    return std::make_tuple(vp1,vp2);
+    float nv1 = (Uav.col(i+3) - Uav.col(j+3)).norm();
+    float nv2 = (Uav.col(i+3) - Uav.col(k+3)).norm();
+    return std::make_tuple(nv1,nv2);
 }
 void Controller::data_update(Vector3f u0p ,Vector3f u1p,Vector3f u2p ,Vector3f u0v,Vector3f u1v ,Vector3f u2v)
 {
@@ -18,22 +18,22 @@ void Controller::data_update(Vector3f u0p ,Vector3f u1p,Vector3f u2p ,Vector3f u
 }
 std::tuple<float, float> Controller::cacl_delta(int i,int j,int k) //uav delta
 {
-    float np1,np2,vp1,vp2,dta1,dta2;
+    float np1,np2,nv1,nv2,dta1,dta2;
     tie(np1,np2) = cal_position_norm(i,j,k);
-    tie(vp1,vp2) = cal_velocity_norm(i,j,k);
+    tie(nv1,nv2) = cal_velocity_norm(i,j,k);
 
-    dta1 = acos((Uav.col(j) - Uav.col(i)).dot(Uav.col(i+3) - Uav.col(j+3))/np1*vp1);
-    dta2 = acos((Uav.col(k) - Uav.col(i)).dot(Uav.col(i+3) - Uav.col(k+3))/np1*vp1);
+    dta1 = acos((Uav.col(j) - Uav.col(i)).dot(Uav.col(i+3) - Uav.col(j+3))/np1*nv1)*180/M_PI;
+    dta2 = acos((Uav.col(k) - Uav.col(i)).dot(Uav.col(i+3) - Uav.col(k+3))/np1*nv1)*180/M_PI;
     
     return std::make_tuple(dta1,dta2);
 }
 std::tuple<float, float> Controller::cacl_collision_free_region(int i,int j,int k) //collisoin-free region M
 {
-    float vp1,vp2,om1,om2;
-    tie(vp1,vp2) = cal_velocity_norm(i,j,k);
+    float nv1,nv2,om1,om2;
+    tie(nv1,nv2) = cal_velocity_norm(i,j,k);
 
-    om1 = vp1*cos(beta);
-    om2 = vp2*cos(beta);
+    om1 = nv1*cos(beta*M_PI/180);
+    om2 = nv2*cos(beta*M_PI/180);
     return std::make_tuple(om1,om2);
 }
 std::tuple<float, float> Controller::cacl_theta1(int i,int j,int k)
@@ -43,10 +43,10 @@ std::tuple<float, float> Controller::cacl_theta1(int i,int j,int k)
     pmx = pow(m1x,2);
     pmy = pow(m1y,2);
     pr = pow(rmin,2);
-    th1 = atan((m1x*m1y-sqrt(pmx*pmy-((pmx-pr)*(pmy-pr))))/(pmx-pr));
+    th1 = atan((m1x*m1y-sqrt(pmx*pmy-((pmx-pr)*(pmy-pr))))/(pmx-pr))*180/M_PI;
     pmx = pow(m2x,2);
     pmy = pow(m2y,2);
-    th2 = atan((m2x*m2y-sqrt(pmx*pmy-((pmx-pr)*(pmy-pr))))/(pmx-pr));
+    th2 = atan((m2x*m2y-sqrt(pmx*pmy-((pmx-pr)*(pmy-pr))))/(pmx-pr))*180/M_PI;
 
     return std::make_tuple(th1,th2);
     
@@ -55,98 +55,126 @@ std::tuple<float, float,float, float> Controller::cacl_pointM(int i,int j,int k)
 {
     float m1x,m1y,m2x,m2y,om1,om2;
     tie(om1,om2) = cacl_collision_free_region(i,j,k);
-    m1x = Uav(0,i)+om1*cos(beta);
-    m1y = Uav(1,i)+om1*sin(beta);
-    m2x = Uav(0,i)+om1*cos(beta);
-    m2y = Uav(1,i)+om1*sin(beta);
+    m1x = Uav(0,i)+om1*cos(beta*M_PI/180);
+    m1y = Uav(1,i)+om1*sin(beta*M_PI/180);
+    m2x = Uav(0,i)+om1*cos(beta*M_PI/180);
+    m2y = Uav(1,i)+om1*sin(beta*M_PI/180);
    
     return std::make_tuple(m1x,m1y,m2x,m2y);
 }
 void Controller::safe_range() //uav safety distance
 {
+    tie(delta[0],delta[1]) = cacl_delta(0,1,2);
+    tie(delta[2],delta[3]) = cacl_delta(1,0,2);
+    tie(delta[4],delta[5]) = cacl_delta(2,0,1);
 
-    
-    // int j=0;
-    // for(int i = 0; i <6;i++)
-    // {
-    //     if(i == 0 || i == 1)
-    //         j=0;
-    //     else if(i == 2 || i == 3)
-    //         j=1;
-    //     else
-    //         j=2;
+    tie(V_norm[0],V_norm[1]) = cal_velocity_norm(0,1,2);
+    tie(V_norm[2],V_norm[3]) = cal_velocity_norm(1,0,2);
+    tie(V_norm[4],V_norm[5]) = cal_velocity_norm(2,0,1);
 
-    //     if((delta(i) > 0 && delta(i) < beta) || (delta(i) > -beta && delta(i) < 0)) //rvar
-    //     {
-    //         rsafe(i) = kv/(kw+wmax)*V_norm(j)*cos(delta(i));
-    //     }
-    //     else if((delta(i) >= beta && delta(i) <= 90+theta) || (delta(i) >= -90-theta && delta(i) < -beta)) //rconnect
-    //     {
+    tie(theta[0],theta[1]) = cacl_theta1(0,1,2);
+    tie(theta[2],theta[3]) = cacl_theta1(1,0,2);
+    tie(theta[4],theta[5]) = cacl_theta1(2,0,1);
 
-    //     }
-    //     else
-    //     {
-    //         rsafe(i)=rmin;
-    //     }
-    // }
+    for(int i = 0; i <6;i++)
+    {
+        if((delta[i] > 0 && delta[i] < beta) || (delta[i] > -beta && delta[i] < 0)) //rvar
+        {
+            rsafe[i] = kv/(kw+wmax)*V_norm[i]*cos(delta[i]*M_PI/180);
+        }
+        else if((delta[i] >= beta && delta[i] <= 90+theta[i]) || (delta[i] >= -90-theta[i] && delta[i] < -beta)) //rconnect
+        {
+            rsafe[i] = V_norm[i]*cos(beta*M_PI/180)*sin((beta-theta[i])*M_PI/180)/sin((M_PI-delta[i]+theta[i])*M_PI/180);
+        }
+        else
+        {
+            rsafe[i]=rmin;
+        }
+    }
+}
+void Controller::cacl_threat_level()
+{
+    tie(P_norm[0],P_norm[1]) = cal_position_norm(0,1,2);
+    tie(P_norm[2],P_norm[3]) = cal_position_norm(1,0,2);
+    tie(P_norm[4],P_norm[5]) = cal_position_norm(2,0,1);
+
+    for(int i=0; i<6;i++)
+    {
+        if(cos(delta[i]*M_PI/180)>0)
+        {
+            THlev[i] = (1/P_norm[i]-1/rsafe[i])*V_norm[i]*cos(delta[i]*M_PI/180);
+        }
+        else
+        {
+            THlev[i] = 0;
+        }
+    }
+}
+void Controller::cacl_uav_state_vector()
+{
+    Uav_pos.col(0) = Uav.col(1) - Uav.col(0);
+    Uav_pos.col(1) = Uav.col(2) - Uav.col(0);
+    Uav_pos.col(2) = Uav.col(0) - Uav.col(1);
+    Uav_pos.col(3) = Uav.col(2) - Uav.col(1);
+    Uav_pos.col(4) = Uav.col(0) - Uav.col(2);
+    Uav_pos.col(5) = Uav.col(1) - Uav.col(2);
+
+    Uav_vel.col(0) = Uav.col(3) - Uav.col(4);
+    Uav_vel.col(1) = Uav.col(3) - Uav.col(5);
+    Uav_vel.col(2) = Uav.col(4) - Uav.col(3);
+    Uav_vel.col(3) = Uav.col(4) - Uav.col(5);
+    Uav_vel.col(4) = Uav.col(5) - Uav.col(3);
+    Uav_vel.col(5) = Uav.col(5) - Uav.col(4);
+}
+void Controller::repulsive_potential()
+{
+    MatrixXf Frep_p = MatrixXf::Zero(3,6);
+    MatrixXf Frep_v = MatrixXf::Zero(3,6);
+     
+   for(int i=0; i<6; i++)
+    {
+        if(P_norm[i]<rsafe[i])
+        {
+            if((delta[i]>=0 && delta[i] < 90) || (delta[i]>=-90 && delta[i] < 0))
+            {
+                Frep_p.col(i) << krep_p*THlev[i]*(-Uav_pos.col(i))/P_norm[i];
+            }
+
+            else if(delta[i]>=90 && delta[i] <=270 )
+            {
+                Frep_v.col(i) << krep_v*THlev[i]*((-Uav_pos.col(i))/P_norm[i]*1/cos(delta[i]*M_PI/180)+(Uav_vel.col(i)/V_norm[i]));
+            }
+            else
+            {
+                Frep_p.col(i) <<0,0,0;
+                Frep_v.col(i) <<0,0,0;
+            }
+            
+        }
+        else
+        {
+            Frep_p.col(i) <<0,0,0;
+            Frep_v.col(i) <<0,0,0;
+        }
+
+    }
+
+    Frep = Frep_p + Frep_v;
 
 }
-float Controller::cacl_threat_level(practice::information t1 ,practice::information t2)
+std::tuple<float, float> Controller::attractive_potential(int i,int j,int k)
 {
-    
-}
-float Controller::repulsive_potential(float dis)
-{
-
-}
-float Controller::attractive_potential(float dis)
-{
-
+    //目標點追蹤
 }
 void Controller::virtual_vel()
 {
-    
+    cacl_threat_level();
+    safe_range();
+    repulsive_potential();
 }
-float Controller::max_vel(float a1,float a2,float a3)
-{
-    float max=1,m[3]={abs(a1),abs(a2),abs(a3)};
-    for(int i=0;i<3;i++)
-    {
-       if(m[i]>max)
-       {
-         max=m[i];
-       } 
-    }
-    return max; 
-}
-// void Controller::scale_down()
-// {
-//     float scale=1;
-//     for(int i=0;i<3;i++)
-//     {
-//         if(Cuav[i].vel.x > max_v || Cuav[i].vel.y > max_v || Cuav[i].vel.z > max_v)
-//         {
-//             scale = max_vel(Cuav[i].vel.x,Cuav[i].vel.y,Cuav[i].vel.z);               
-//         }
-//         Cuav[i].vel.x = Cuav[i].vel.x/scale;
-//         Cuav[i].vel.y = Cuav[i].vel.y/scale;
-//         Cuav[i].vel.z = Cuav[i].vel.z/scale;
-//     } 
-// }
 void Controller::process()
 {
-    // position_norm[0] = discal(Cuav[0],Cuav[1]);//12
-    // position_norm[1] = discal(Cuav[0],Cuav[2]);//13
-    // position_norm[2] = discal(Cuav[1],Cuav[2]);//23
-    // vel_norm[0] = 
-    // vel_norm[1]
-    // vel_norm[2]
-    // uav_delta[0] = cacl_delta(Cuav[0],Cuav[1]); //12
-    // uav_delta[1] = cacl_delta(Cuav[1],Cuav[0]); //21
-    // uav_delta[2] = cacl_delta(Cuav[1],Cuav[2]); //13
-    // uav_delta[3] = cacl_delta(Cuav[2],Cuav[1]); //31
-    // uav_delta[4] = cacl_delta(Cuav[1],Cuav[2]); //23
-    // uav_delta[5] = cacl_delta(Cuav[2],Cuav[1]); //32
+
 }
 void Controller::update_center(float x,float y,float z)
 {

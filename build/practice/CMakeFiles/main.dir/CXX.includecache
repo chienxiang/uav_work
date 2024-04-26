@@ -26,20 +26,6 @@ geometry_msgs/Point.h
 geometry_msgs/Vector3.h
 -
 
-/home/user/uav_work/src/practice/include/coordination_transfer.h
-iostream
--
-string
--
-bits/stdc++.h
--
-math.h
--
-cmath
--
-complex
--
-
 /home/user/uav_work/src/practice/include/practice/Uav.h
 ros/ros.h
 -
@@ -107,15 +93,9 @@ practice/Uav.h
 /home/user/uav_work/src/practice/src/practice/Uav.h
 practice/controller.h
 /home/user/uav_work/src/practice/src/practice/controller.h
-coordination_transfer.h
-/home/user/uav_work/src/practice/src/coordination_transfer.h
 iostream
 -
 fstream
--
-vector
--
-Eigen/Dense
 -
 
 /opt/ros/noetic/include/geometry_msgs/Point.h
