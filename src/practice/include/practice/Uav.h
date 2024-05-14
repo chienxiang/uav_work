@@ -42,9 +42,12 @@ class Uav
         void pub_position(float x, float y, float z);
         void pub_position(float x,float y,float z,float rad);
         void pub_velocity(float x,float y,float z);
+        void pub_velocity(Matrix3f _Frep);
+        void pub_velocity(Matrix3f _F,float rad);
         void pub_velocity(float x,float y,float z,float rad);
         void pub_acceleration(float x,float y,float z);
         void pub_acceleration(float x,float y,float z,float rad);
+        void Incremental_PID(float targetx,float targety,float targetz);
         void get_position();
         void get_velocity();
         void get_acceleration();
@@ -89,4 +92,9 @@ class Uav
         float driftX=0,driftY=0,home_driftX=0,home_driftY=0,home_driftZ=0;
         float latitude; //經度
         float longitude; //緯度
+        float Current_Error[3];//当前误差
+        float Last_Error[3];//上一次误差
+        float Previous_Error[3];//上上次误差
+        float v[3]={0,0,0}; //pid 速度
+
 };

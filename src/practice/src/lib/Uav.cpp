@@ -187,7 +187,25 @@ void Uav::pub_velocity(float x,float y,float z)
     PositionTarget.velocity.z=z;
     PositionTarget_pub.publish(PositionTarget); 
 }
-        
+void Uav::pub_velocity(Matrix3f _F)
+{
+    PositionTarget.type_mask =1 + 2 + 4 + /*8 + 16 + 32 */+ 64 + 128 + 256 + 512 + 1024 + 2048;
+    PositionTarget.coordinate_frame = 1;
+    PositionTarget.velocity.x=_F(0,uav_id)+v[0];
+    PositionTarget.velocity.y=_F(1,uav_id)+v[1];
+    PositionTarget.velocity.z=_F(2,uav_id)+v[2];
+    PositionTarget_pub.publish(PositionTarget); 
+}
+void Uav::pub_velocity(Matrix3f _F,float rad)
+{
+    PositionTarget.type_mask =1 + 2 + 4 + /*8 + 16 + 32 */+ 64 + 128 + 256 + 512 + /*1024*/ + 2048;
+    PositionTarget.coordinate_frame = 1;
+    PositionTarget.velocity.x=_F(0,uav_id);
+    PositionTarget.velocity.y=_F(1,uav_id);
+    PositionTarget.velocity.z=_F(2,uav_id);
+    PositionTarget.yaw=rad;
+    PositionTarget_pub.publish(PositionTarget); 
+}        
 void Uav::pub_velocity(float x,float y,float z,float rad)
 {
     PositionTarget.type_mask =1 + 2 + 4 /*+ 8 + 16 + 32*/ + 64 + 128 + 256 + 512 + /*1024 +*/ 2048;
@@ -219,7 +237,29 @@ void Uav::pub_acceleration(float x,float y,float z,float rad)
     PositionTarget.yaw=rad;
     PositionTarget_pub.publish(PositionTarget); 
 }
+void Uav::Incremental_PID(float targetx,float targety,float targetz)
+{
+    float Current_Error[3] = {(targetx-px),(targety-py),(targetz-pz)};
+    float Kp=0.35,Ki=0.65,Kd=0.005,limitV=3;
+    v[0]= Kp*(Current_Error[0]-Last_Error[0]) + Ki*Current_Error[0] + Kd*(Current_Error[0]-2*Last_Error[0]+Previous_Error[0]);
+    v[1]= Kp*(Current_Error[1]-Last_Error[1]) + Ki*Current_Error[1] + Kd*(Current_Error[1]-2*Last_Error[1]+Previous_Error[1]);
+    v[2]= Kp*(Current_Error[2]-Last_Error[2]) + Ki*Current_Error[2] + Kd*(Current_Error[2]-2*Last_Error[2]+Previous_Error[2]);
 
+    for(int i=0;i<3;i++)
+    {
+        Previous_Error[i] = Last_Error[i];
+        Last_Error[i] = Current_Error[i];
+        if(abs(v[i])>limitV && v[i]<0)
+        {
+            v[i]=-limitV;
+        }
+        else if(abs(v[i])>limitV && v[i]>0)
+        {
+           v[i]=limitV; 
+        }
+    }
+    // pub_velocity(v[0],v[1],v[2]);
+}
 void Uav::get_position()
 {
     cout<<"P_x:"<<px<<" P_y:"<<py<<" P_z:"<<pz<<endl;     
