@@ -84,7 +84,6 @@ void Uav::init()
     uav_drifting();
 
 }
-
 void Uav::enable_offboard()
 {
     if( set_mode_client.call(set_mode) && set_mode.response.mode_sent)
@@ -200,9 +199,9 @@ void Uav::pub_velocity(Matrix3f _F,float rad)
 {
     PositionTarget.type_mask =1 + 2 + 4 + /*8 + 16 + 32 */+ 64 + 128 + 256 + 512 + /*1024*/ + 2048;
     PositionTarget.coordinate_frame = 1;
-    PositionTarget.velocity.x=_F(0,uav_id);
-    PositionTarget.velocity.y=_F(1,uav_id);
-    PositionTarget.velocity.z=_F(2,uav_id);
+    PositionTarget.velocity.x=_F(0,uav_id)+v[0];
+    PositionTarget.velocity.y=_F(1,uav_id)+v[1];
+    PositionTarget.velocity.z=_F(2,uav_id)+v[2];
     PositionTarget.yaw=rad;
     PositionTarget_pub.publish(PositionTarget); 
 }        

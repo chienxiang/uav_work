@@ -35,10 +35,8 @@ class Uav
         void set_arm_cmd();
         void init();
         void enable_offboard();
-        void enable_RTL();
         void enable_armed();
         void landing();
-        void fly_2_target(double x, double y, double z);
         void pub_position(float x, float y, float z);
         void pub_position(float x,float y,float z,float rad);
         void pub_velocity(float x,float y,float z);
@@ -87,8 +85,8 @@ class Uav
 
         std::ifstream ifs;
         std::vector<float> drifting;
-        int well,mode,mode_detect=0,uav_id;
-        float px,py,pz,vx,vy,vz,ax,ay,az,Opx,Opy,Opz,yaw_t,avoid[3],tmp;
+        int uav_id;
+        float px,py,pz,vx,vy,vz,ax,ay,az,Opx,Opy,Opz,tmp;
         float driftX=0,driftY=0,home_driftX=0,home_driftY=0,home_driftZ=0;
         float latitude; //經度
         float longitude; //緯度
@@ -96,5 +94,7 @@ class Uav
         float Last_Error[3];//上一次误差
         float Previous_Error[3];//上上次误差
         float v[3]={0,0,0}; //pid 速度
+
+        bool mission_done = false;
 
 };

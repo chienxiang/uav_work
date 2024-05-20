@@ -14,11 +14,11 @@ using namespace Eigen;
 class Controller
 {   
     private:
-        float rmin = 2,rsafe[6] = {0};;
+        float rmin = 5,rsafe[6] = {0},length = 3;
         float beta=60,delta[6];
-        float krep_p=6,krep_v=3;
+        float krep_p=3,krep_v=10;
         Vector3f center_move = Vector3f::Zero();
-        Vector3f circumcentre;
+        Vector3f center;
         Matrix3f desireUavPos = Matrix3f::Zero();
         Matrix3f ed = Matrix3f::Zero();
         Matrix3f ed1 = Matrix3f::Zero();

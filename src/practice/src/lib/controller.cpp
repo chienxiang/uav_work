@@ -146,7 +146,7 @@ void Controller::repulsive_potential()
     Frep.col(0) << Frep_p.col(0) + Frep_v.col(0)+Frep_p.col(1) + Frep_v.col(1);     
     Frep.col(1) << Frep_p.col(2) + Frep_v.col(2)+Frep_p.col(3) + Frep_v.col(3);     
     Frep.col(2) << Frep_p.col(4) + Frep_v.col(4)+Frep_p.col(5) + Frep_v.col(5);
-    //cout << Frep <<endl;     
+    // cout << Frep <<endl;     
 
 }
 void Controller::attractive_potential()
@@ -160,27 +160,21 @@ void Controller::virtual_vel()
     cacl_threat_level();
     repulsive_potential();
 }
-void Controller::process()
-{
-
-}
 void Controller::Circumcentre_init()
 {
-    circumcentre << 0,0,5;
-    desireUavPos <<-3/sqrt(3),1.5/sqrt(3),1.5/sqrt(3),0,-1.5,1.5,5,5,5;
-    // cout<<desireUavPos<<endl;
+    center << 0,0,5;
+    desireUavPos <<-length*sin(90*M_PI/180),-length*sin(210*M_PI/180),-length*sin(330*M_PI/180),length*cos(90*M_PI/180),length*cos(210*M_PI/180),length*cos(330*M_PI/180),5,5,5;
 }
 void Controller::Uav_Circumcentre_move(float x,float y,float z)
 {
-    center_move << x-circumcentre(0),y-circumcentre(1),z-circumcentre(2);
-    circumcentre << x,y,z;
+    center << x,y,z;
+    float angle = 90;
     for(int i = 0; i <3;i++)
     {
-       desireUavPos.col(i) <<  desireUavPos.col(i)+center_move;
+        desireUavPos.col(i) << center(0)+length*-sin(angle*M_PI/180),center(1)+length*cos(angle*M_PI/180),5;
+        angle += 120; 
     }
     follower();
-    // cout << "Circumcentre=" << circumcentre << endl;
-    // cout << "center_move=" << center_move << endl;
 }
 void Controller::follower()
 {   
@@ -205,10 +199,22 @@ void Controller::follower()
             } 
         }
     }
-    // cout << Fformation << endl;
+}
+void Controller::process()
+{
+    virtual_vel();
+    follower();
 }
 void Controller::null_space_behavior()
 {
+    // MatrixXf JacobP = MatrixXf::Zero(3,6);
+    // MatrixXf projN = MatrixXf::Zero(3,6);
+
+    // for(int i=0;i<6;i++)
+    // {
+    //     JacobP.col(i) = 
+    // }
+
     // process();
     // follower();
     // float P[3][3],N1[3][3],N2[3][3],N3[3][3];
