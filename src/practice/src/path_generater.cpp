@@ -1,9 +1,11 @@
 /*直接執行不需要用rosrun*/
 #include<iostream>
 #include <fstream>
+#include <Eigen/Dense>
 #include <math.h>
 #define PI 3.1415927
 using namespace std;
+using namespace Eigen;
 
 int main(){
 
@@ -15,7 +17,7 @@ int main(){
         return 1; // EXIT_FAILURE
     }
     float angle=0,R=5,cnt=0;
-    float x=0,y=0,z=5,i=0.001;
+    float x=0,y=0,z=5,i=0.001,t=0;
     while(1)
     {
         if(angle!=360)
@@ -25,6 +27,7 @@ int main(){
           x=-R*sin(angle*PI/180);
           y=R*cos(angle*PI/180);
           z+=i;
+          t++;
         }
         else
         {
@@ -33,7 +36,7 @@ int main(){
         }
             
 
-        if(cnt==3)
+        if(cnt==2)
             break;
     }
     

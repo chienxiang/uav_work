@@ -7,7 +7,8 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "offb_node");
     Controller controller;
-    float p = 0,tmp,side = 3;
+    float p = 0,tmp,side = 2.5;
+    bool sw = false;
     Uav uav1(1);
     Uav uav0(0);
     Uav uav2(2);
@@ -32,7 +33,7 @@ int main(int argc, char **argv)
     file.close();
 
     int choose=0;
-    cout<<"choose IAPF(1) or formation(2) or goHome(3):";
+    cout<<"choose IAPF(1) or formation(2) or goHome(3) or NSB(4):";
     cin>>choose;
     switch(choose)
     {
@@ -56,13 +57,13 @@ int main(int argc, char **argv)
                             last_request = ros::Time::now();
                         }
                     }
-                    if(ros::Time::now() - last_request < ros::Duration(15.0))
+                    if(ros::Time::now() - last_request < ros::Duration(12.0))
                     {   
                         uav0.pub_position(-5,-2,5);
                         uav1.pub_position(5,-2,5);
-                        uav2.pub_position(0,5,5);  
+                        uav2.pub_position(0,5,5);
                     }
-                    else if(ros::Time::now() - last_request > ros::Duration(15.0))
+                    else if(ros::Time::now() - last_request > ros::Duration(12.0))
                     {
                         uav0.data_update();
                         uav1.data_update();
@@ -72,8 +73,8 @@ int main(int argc, char **argv)
                         uav1.Incremental_PID(-5,-2,5);
                         uav2.pub_position(0,5,5);
                         controller.virtual_vel();
-                        uav0.pub_velocity(controller.Frep,0);
-                        uav1.pub_velocity(controller.Frep,0);
+                        uav0.pub_velocity(controller.Frep);
+                        uav1.pub_velocity(controller.Frep);
                     }
                     ros::spinOnce();
                     uav0.rate.sleep();
@@ -111,10 +112,9 @@ int main(int argc, char **argv)
                         uav1.data_update();
                         uav2.data_update();
                         controller.data_update(uav0.p_data,uav1.p_data,uav2.p_data,uav0.v_data,uav1.v_data,uav2.v_data);
-                        controller.Uav_Circumcentre_move(path[p],path[p+1],path[p+2]);
-                        // controller.Uav_Circumcentre_move(-8,0,5);
+                        controller.Uav_Circumcentre_move(path[p],path[p+1],path[p+2],sw);
                         uav0.pub_velocity(controller.Fformation);
-                        uav1.pub_velocity(controller.Fformation);
+                        uav1.pub_velocity(controller.Fformation); 
                         uav2.pub_velocity(controller.Fformation);
                         if(p!=path.size()-3)
                         {
@@ -191,11 +191,60 @@ int main(int argc, char **argv)
                             last_request = ros::Time::now();
                         }
                     }
-
                     ros::spinOnce();
                     uav0.rate.sleep();
                 }
-                break;                
+                break;   
+        case 4:
+                while(ros::ok())
+                {   
+                    if(uav0.current_state.mode != "OFFBOARD" && uav1.current_state.mode != "OFFBOARD" && uav2.current_state.mode != "OFFBOARD" &&(ros::Time::now() - last_request > ros::Duration(5.0)))
+                    {
+                        uav0.enable_offboard();
+                        uav1.enable_offboard();
+                        uav2.enable_offboard();
+                        last_request = ros::Time::now();
+                    }
+                    else
+                    {
+                        if( !uav0.current_state.armed && !uav1.current_state.armed && !uav2.current_state.armed && (ros::Time::now() - last_request > ros::Duration(5.0)))
+                        {
+                            uav0.enable_armed();
+                            uav1.enable_armed();
+                            uav2.enable_armed();
+                            last_request = ros::Time::now();
+                        }
+                    }
+                    if(ros::Time::now() - last_request < ros::Duration(10.0))
+                    {   
+                        uav0.pub_position(-side*sin(90*M_PI/180),side*cos(90*M_PI/180),5);
+                        uav1.pub_position(-side*sin(210*M_PI/180),side*cos(210*M_PI/180),5);
+                        uav2.pub_position(-side*sin(330*M_PI/180),side*cos(330*M_PI/180),5);  
+                    }
+                    else if(ros::Time::now() - last_request > ros::Duration(10.0))
+                    {
+                        uav0.data_update();
+                        uav1.data_update();
+                        uav2.data_update();
+                        controller.data_update(uav0.p_data,uav1.p_data,uav2.p_data,uav0.v_data,uav1.v_data,uav2.v_data);
+                        controller.process(path[p],path[p+1],path[p+2],sw);
+                        uav0.pub_velocity(controller.Fnsb);
+                        uav1.pub_velocity(controller.Fnsb); 
+                        uav2.pub_velocity(controller.Fnsb);
+                        if(p!=path.size()-3)
+                        {
+                            p+=3;
+                        }
+                        if(p == path.size()/2)
+                        {
+                            sw = true;
+                        }
+                    }
+                    ros::spinOnce();
+                    uav0.rate.sleep();
+
+                }
+                break;                 
     }
     
 

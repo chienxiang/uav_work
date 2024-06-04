@@ -135,6 +135,7 @@ catkin_package(
 add_library(practice
   src/lib/Uav.cpp
   src/lib/controller.cpp
+  src/lib/fuzzy.cpp
 )
 ###########
 ## Build ##
@@ -197,9 +198,6 @@ target_link_libraries(fly_square_gazebo ${catkin_LIBRARIES})
 add_executable(hoffb src/hoffb.cpp)	
 target_link_libraries(hoffb ${catkin_LIBRARIES})
 
-#add_executable(uav0_fly_square src/uav0_fly_square.cpp)	
-#target_link_libraries(uav0_fly_square ${catkin_LIBRARIES})
-
 add_executable(main src/main.cpp)
 add_dependencies(main practice)	
 target_link_libraries(main practice ${catkin_LIBRARIES})
@@ -208,9 +206,9 @@ add_executable(testfly src/testfly.cpp)
 add_dependencies(testfly practice)	
 target_link_libraries(testfly practice ${catkin_LIBRARIES})
 
-add_executable(test_uav src/test_uav.cpp)
-add_dependencies(test_uav practice)		
-target_link_libraries(test_uav practice ${catkin_LIBRARIES})
+#add_executable(test_uav src/test_uav.cpp)
+#add_dependencies(test_uav practice)		
+#target_link_libraries(test_uav practice ${catkin_LIBRARIES})
 
 add_executable(coordination_drift src/coordination_drift.cpp)
 add_dependencies(coordination_drift practice)		

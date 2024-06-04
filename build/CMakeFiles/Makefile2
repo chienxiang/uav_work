@@ -209,7 +209,6 @@ practice/all: practice/CMakeFiles/uav_acc.dir/all
 practice/all: practice/CMakeFiles/practice_generate_messages.dir/all
 practice/all: practice/CMakeFiles/testfly.dir/all
 practice/all: practice/CMakeFiles/practice.dir/all
-practice/all: practice/CMakeFiles/test_uav.dir/all
 practice/all: practice/CMakeFiles/takeoff_n_land.dir/all
 
 .PHONY : practice/all
@@ -251,7 +250,6 @@ practice/clean: practice/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/clean
 practice/clean: practice/CMakeFiles/sensor_msgs_generate_messages_eus.dir/clean
 practice/clean: practice/CMakeFiles/practice.dir/clean
 practice/clean: practice/CMakeFiles/practice_generate_messages_nodejs.dir/clean
-practice/clean: practice/CMakeFiles/test_uav.dir/clean
 practice/clean: practice/CMakeFiles/geographic_msgs_generate_messages_py.dir/clean
 practice/clean: practice/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/clean
 practice/clean: practice/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/clean
@@ -593,7 +591,7 @@ gtest/googletest/CMakeFiles/gtest.dir/clean:
 ardupilot/CMakeFiles/sub.dir/all:
 	$(MAKE) -f ardupilot/CMakeFiles/sub.dir/build.make ardupilot/CMakeFiles/sub.dir/depend
 	$(MAKE) -f ardupilot/CMakeFiles/sub.dir/build.make ardupilot/CMakeFiles/sub.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=43,44 "Built target sub"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=44,45 "Built target sub"
 .PHONY : ardupilot/CMakeFiles/sub.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1684,7 +1682,7 @@ practice/CMakeFiles/practice_generate_messages_py.dir/all: ardupilot/CMakeFiles/
 practice/CMakeFiles/practice_generate_messages_py.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_information.dir/all
 	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_py.dir/build.make practice/CMakeFiles/practice_generate_messages_py.dir/depend
 	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_py.dir/build.make practice/CMakeFiles/practice_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=38,39 "Built target practice_generate_messages_py"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=39,40 "Built target practice_generate_messages_py"
 .PHONY : practice/CMakeFiles/practice_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1770,7 +1768,7 @@ practice/CMakeFiles/main.dir/all: practice/CMakeFiles/practice.dir/all
 
 # Build rule for subdir invocation for target.
 practice/CMakeFiles/main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/main.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 0
 .PHONY : practice/CMakeFiles/main.dir/rule
@@ -1878,7 +1876,7 @@ practice/CMakeFiles/coordination_drift.dir/all: practice/CMakeFiles/practice.dir
 
 # Build rule for subdir invocation for target.
 practice/CMakeFiles/coordination_drift.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/coordination_drift.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 0
 .PHONY : practice/CMakeFiles/coordination_drift.dir/rule
@@ -2089,7 +2087,7 @@ practice/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/clean:
 practice/CMakeFiles/uav_acc.dir/all:
 	$(MAKE) -f practice/CMakeFiles/uav_acc.dir/build.make practice/CMakeFiles/uav_acc.dir/depend
 	$(MAKE) -f practice/CMakeFiles/uav_acc.dir/build.make practice/CMakeFiles/uav_acc.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=51,52 "Built target uav_acc"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=50,51 "Built target uav_acc"
 .PHONY : practice/CMakeFiles/uav_acc.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2228,12 +2226,12 @@ practice/CMakeFiles/uuid_msgs_generate_messages_py.dir/clean:
 practice/CMakeFiles/testfly.dir/all: practice/CMakeFiles/practice.dir/all
 	$(MAKE) -f practice/CMakeFiles/testfly.dir/build.make practice/CMakeFiles/testfly.dir/depend
 	$(MAKE) -f practice/CMakeFiles/testfly.dir/build.make practice/CMakeFiles/testfly.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=49,50 "Built target testfly"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=48,49 "Built target testfly"
 .PHONY : practice/CMakeFiles/testfly.dir/all
 
 # Build rule for subdir invocation for target.
 practice/CMakeFiles/testfly.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/testfly.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 0
 .PHONY : practice/CMakeFiles/testfly.dir/rule
@@ -2336,12 +2334,12 @@ practice/CMakeFiles/sensor_msgs_generate_messages_eus.dir/clean:
 practice/CMakeFiles/practice.dir/all:
 	$(MAKE) -f practice/CMakeFiles/practice.dir/build.make practice/CMakeFiles/practice.dir/depend
 	$(MAKE) -f practice/CMakeFiles/practice.dir/build.make practice/CMakeFiles/practice.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=30,31,32 "Built target practice"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=30,31,32,33 "Built target practice"
 .PHONY : practice/CMakeFiles/practice.dir/all
 
 # Build rule for subdir invocation for target.
 practice/CMakeFiles/practice.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/practice.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 0
 .PHONY : practice/CMakeFiles/practice.dir/rule
@@ -2365,7 +2363,7 @@ practice/CMakeFiles/practice_generate_messages_nodejs.dir/all: ardupilot/CMakeFi
 practice/CMakeFiles/practice_generate_messages_nodejs.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_information.dir/all
 	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_nodejs.dir/build.make practice/CMakeFiles/practice_generate_messages_nodejs.dir/depend
 	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_nodejs.dir/build.make practice/CMakeFiles/practice_generate_messages_nodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=37 "Built target practice_generate_messages_nodejs"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=38 "Built target practice_generate_messages_nodejs"
 .PHONY : practice/CMakeFiles/practice_generate_messages_nodejs.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2384,33 +2382,6 @@ practice_generate_messages_nodejs: practice/CMakeFiles/practice_generate_message
 practice/CMakeFiles/practice_generate_messages_nodejs.dir/clean:
 	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_nodejs.dir/build.make practice/CMakeFiles/practice_generate_messages_nodejs.dir/clean
 .PHONY : practice/CMakeFiles/practice_generate_messages_nodejs.dir/clean
-
-#=============================================================================
-# Target rules for target practice/CMakeFiles/test_uav.dir
-
-# All Build rule for target.
-practice/CMakeFiles/test_uav.dir/all: practice/CMakeFiles/practice.dir/all
-	$(MAKE) -f practice/CMakeFiles/test_uav.dir/build.make practice/CMakeFiles/test_uav.dir/depend
-	$(MAKE) -f practice/CMakeFiles/test_uav.dir/build.make practice/CMakeFiles/test_uav.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=47,48 "Built target test_uav"
-.PHONY : practice/CMakeFiles/test_uav.dir/all
-
-# Build rule for subdir invocation for target.
-practice/CMakeFiles/test_uav.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 5
-	$(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/test_uav.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/uav_work/build/CMakeFiles 0
-.PHONY : practice/CMakeFiles/test_uav.dir/rule
-
-# Convenience name for target.
-test_uav: practice/CMakeFiles/test_uav.dir/rule
-
-.PHONY : test_uav
-
-# clean rule for target.
-practice/CMakeFiles/test_uav.dir/clean:
-	$(MAKE) -f practice/CMakeFiles/test_uav.dir/build.make practice/CMakeFiles/test_uav.dir/clean
-.PHONY : practice/CMakeFiles/test_uav.dir/clean
 
 #=============================================================================
 # Target rules for target practice/CMakeFiles/geographic_msgs_generate_messages_py.dir
@@ -2500,7 +2471,7 @@ practice/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/clean:
 practice/CMakeFiles/takeoff_n_land.dir/all:
 	$(MAKE) -f practice/CMakeFiles/takeoff_n_land.dir/build.make practice/CMakeFiles/takeoff_n_land.dir/depend
 	$(MAKE) -f practice/CMakeFiles/takeoff_n_land.dir/build.make practice/CMakeFiles/takeoff_n_land.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=45,46 "Built target takeoff_n_land"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=46,47 "Built target takeoff_n_land"
 .PHONY : practice/CMakeFiles/takeoff_n_land.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2529,7 +2500,7 @@ practice/CMakeFiles/practice_generate_messages_cpp.dir/all: ardupilot/CMakeFiles
 practice/CMakeFiles/practice_generate_messages_cpp.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_information.dir/all
 	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_cpp.dir/build.make practice/CMakeFiles/practice_generate_messages_cpp.dir/depend
 	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_cpp.dir/build.make practice/CMakeFiles/practice_generate_messages_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=33 "Built target practice_generate_messages_cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=34 "Built target practice_generate_messages_cpp"
 .PHONY : practice/CMakeFiles/practice_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2585,7 +2556,7 @@ practice/CMakeFiles/practice_generate_messages_eus.dir/all: ardupilot/CMakeFiles
 practice/CMakeFiles/practice_generate_messages_eus.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_information.dir/all
 	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_eus.dir/build.make practice/CMakeFiles/practice_generate_messages_eus.dir/depend
 	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_eus.dir/build.make practice/CMakeFiles/practice_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=34,35 "Built target practice_generate_messages_eus"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=35,36 "Built target practice_generate_messages_eus"
 .PHONY : practice/CMakeFiles/practice_generate_messages_eus.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2668,7 +2639,7 @@ practice/CMakeFiles/practice_generate_messages_lisp.dir/all: ardupilot/CMakeFile
 practice/CMakeFiles/practice_generate_messages_lisp.dir/all: practice/CMakeFiles/_practice_generate_messages_check_deps_information.dir/all
 	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_lisp.dir/build.make practice/CMakeFiles/practice_generate_messages_lisp.dir/depend
 	$(MAKE) -f practice/CMakeFiles/practice_generate_messages_lisp.dir/build.make practice/CMakeFiles/practice_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=36 "Built target practice_generate_messages_lisp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=37 "Built target practice_generate_messages_lisp"
 .PHONY : practice/CMakeFiles/practice_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3613,7 +3584,7 @@ realsense_ros_gazebo/CMakeFiles/realsense_gazebo_plugin.dir/all: realsense_ros_g
 realsense_ros_gazebo/CMakeFiles/realsense_gazebo_plugin.dir/all: realsense_ros_gazebo/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/all
 	$(MAKE) -f realsense_ros_gazebo/CMakeFiles/realsense_gazebo_plugin.dir/build.make realsense_ros_gazebo/CMakeFiles/realsense_gazebo_plugin.dir/depend
 	$(MAKE) -f realsense_ros_gazebo/CMakeFiles/realsense_gazebo_plugin.dir/build.make realsense_ros_gazebo/CMakeFiles/realsense_gazebo_plugin.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=40,41,42 "Built target realsense_gazebo_plugin"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/uav_work/build/CMakeFiles --progress-num=41,42,43 "Built target realsense_gazebo_plugin"
 .PHONY : realsense_ros_gazebo/CMakeFiles/realsense_gazebo_plugin.dir/all
 
 # Build rule for subdir invocation for target.

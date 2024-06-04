@@ -1,6 +1,6 @@
 #include "practice/Uav.h"
 #include <string>
-Uav::Uav(int id):nh(), rate(100.0)
+Uav::Uav(int id):nh(), rate(20.0)
 {
     std::string name = "/uav" + std::to_string(id);
 
@@ -74,7 +74,6 @@ void Uav::set_arm_cmd()
 {
     arm_cmd.request.value = true;
 }
-
 void Uav::init()
 {
     wait_for_FCU();
@@ -103,7 +102,7 @@ void Uav::landing()
     land_cmd.request.yaw = 0;
     land_cmd.request.latitude = 0;
     land_cmd.request.longitude = 0;
-    land_cmd.request.altitude = 0; 
+    land_cmd.request.altitude = 0;
     while (!(land_client.call(land_cmd) &&  land_cmd.response.success))
     {
         ROS_INFO("tring to land");
@@ -173,7 +172,7 @@ void Uav::pub_position(float x,float y,float z,float rad)
     PositionTarget.position.x = x - driftX + home_driftX;
     PositionTarget.position.y = y - driftY + home_driftY;
     PositionTarget.position.z = z + home_driftZ;
-    PositionTarget.yaw = rad;
+    PositionTarget.yaw = rad* 0.0174532925;
     PositionTarget_pub.publish(PositionTarget); 
 }
 
@@ -202,7 +201,7 @@ void Uav::pub_velocity(Matrix3f _F,float rad)
     PositionTarget.velocity.x=_F(0,uav_id)+v[0];
     PositionTarget.velocity.y=_F(1,uav_id)+v[1];
     PositionTarget.velocity.z=_F(2,uav_id)+v[2];
-    PositionTarget.yaw=rad;
+    PositionTarget.yaw=rad* 0.0174532925; //換徑度
     PositionTarget_pub.publish(PositionTarget); 
 }        
 void Uav::pub_velocity(float x,float y,float z,float rad)

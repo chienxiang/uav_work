@@ -30,7 +30,6 @@ class Uav
         void wait_for_FCU();
         void send_setpoints();
         void set_mode_offb();
-        void set_mode_RTL();
         void set_mode_manual();
         void set_arm_cmd();
         void init();
@@ -96,5 +95,6 @@ class Uav
         float v[3]={0,0,0}; //pid 速度
 
         bool mission_done = false;
+        bool island = false;
 
 };

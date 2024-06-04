@@ -115,7 +115,6 @@
 /home/user/uav_work/build/practice/CMakeFiles/sensor_msgs_generate_messages_eus.dir
 /home/user/uav_work/build/practice/CMakeFiles/practice.dir
 /home/user/uav_work/build/practice/CMakeFiles/practice_generate_messages_nodejs.dir
-/home/user/uav_work/build/practice/CMakeFiles/test_uav.dir
 /home/user/uav_work/build/practice/CMakeFiles/geographic_msgs_generate_messages_py.dir
 /home/user/uav_work/build/practice/CMakeFiles/sensor_msgs_generate_messages_lisp.dir
 /home/user/uav_work/build/practice/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir

@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/user/uav_work/src/practice/src/lib/Uav.cpp" "/home/user/uav_work/build/practice/CMakeFiles/practice.dir/src/lib/Uav.cpp.o"
   "/home/user/uav_work/src/practice/src/lib/controller.cpp" "/home/user/uav_work/build/practice/CMakeFiles/practice.dir/src/lib/controller.cpp.o"
+  "/home/user/uav_work/src/practice/src/lib/fuzzy.cpp" "/home/user/uav_work/build/practice/CMakeFiles/practice.dir/src/lib/fuzzy.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

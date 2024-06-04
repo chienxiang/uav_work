@@ -56,8 +56,8 @@
 },
 {
   "directory": "/home/user/uav_work/build/practice",
-  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp    -o CMakeFiles/test_uav.dir/src/test_uav.cpp.o -c /home/user/uav_work/src/practice/src/test_uav.cpp",
-  "file": "/home/user/uav_work/src/practice/src/test_uav.cpp"
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"practice\\\" -Dpractice_EXPORTS -I/home/user/uav_work/devel/include -I/home/user/uav_work/src/practice/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -fPIC   -o CMakeFiles/practice.dir/src/lib/fuzzy.cpp.o -c /home/user/uav_work/src/practice/src/lib/fuzzy.cpp",
+  "file": "/home/user/uav_work/src/practice/src/lib/fuzzy.cpp"
 },
 {
   "directory": "/home/user/uav_work/build/practice",

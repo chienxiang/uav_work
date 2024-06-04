@@ -19,7 +19,7 @@ void state_cb(const mavros_msgs::State::ConstPtr& msg){
 int main(int argc, char **argv)
 {
 
-    ros::init(argc, argv, "uav1");
+    ros::init(argc, argv, "uav2");
     ros::NodeHandle nh("~");
     //ros::NodeHandle nh;
     ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     geometry_msgs::PoseStamped pose;
 
     pose.pose.position.x = 0;
-    pose.pose.position.y = 0;
+    pose.pose.position.y = -1.5;
     pose.pose.position.z = 1.5;
 
     mavros_msgs::SetMode offb_set_mode;

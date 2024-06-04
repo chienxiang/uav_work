@@ -149,10 +149,6 @@ void Controller::repulsive_potential()
     // cout << Frep <<endl;     
 
 }
-void Controller::attractive_potential()
-{
-    //目標點追蹤
-}
 void Controller::virtual_vel()
 {
     cacl_uav_state_vector();
@@ -165,14 +161,28 @@ void Controller::Circumcentre_init()
     center << 0,0,5;
     desireUavPos <<-length*sin(90*M_PI/180),-length*sin(210*M_PI/180),-length*sin(330*M_PI/180),length*cos(90*M_PI/180),length*cos(210*M_PI/180),length*cos(330*M_PI/180),5,5,5;
 }
-void Controller::Uav_Circumcentre_move(float x,float y,float z)
+void Controller::Uav_Circumcentre_move(float x,float y,float z,bool sw)
 {
     center << x,y,z;
     float angle = 90;
-    for(int i = 0; i <3;i++)
+    if(sw)
     {
-        desireUavPos.col(i) << center(0)+length*-sin(angle*M_PI/180),center(1)+length*cos(angle*M_PI/180),5;
-        angle += 120; 
+        /*後兩台交換位置*/
+        desireUavPos.col(0) << center(0)+length*-sin(90*M_PI/180),center(1)+length*cos(90*M_PI/180),center(2);
+        desireUavPos.col(1) << center(0)+length*-sin(330*M_PI/180),center(1)+length*cos(330*M_PI/180),center(2);
+        desireUavPos.col(2) << center(0)+length*-sin(210*M_PI/180),center(1)+length*cos(210*M_PI/180),center(2);
+        /*倒三角*/
+        // desireUavPos.col(0) << center(0)+length*-sin(270*M_PI/180),center(1)+length*cos(270*M_PI/180),center(2);
+        // desireUavPos.col(1) << center(0)+length*-sin(150*M_PI/180),center(1)+length*cos(150*M_PI/180),center(2);
+        // desireUavPos.col(2) << center(0)+length*-sin(30*M_PI/180),center(1)+length*cos(30*M_PI/180),center(2);
+    }
+    else
+    {
+        for(int i = 0; i <3;i++)
+        {
+            desireUavPos.col(i) << center(0)+length*-sin(angle*M_PI/180),center(1)+length*cos(angle*M_PI/180),center(2);
+            angle += 120; 
+        }
     }
     follower();
 }
@@ -181,94 +191,73 @@ void Controller::follower()
     for(int i = 0; i <3;i++)
     {
         ed.col(i) = desireUavPos.col(i) - Uav.col(i); //計算當前誤差
+        // if(center(1)>=0 && center(0)>=0)
+        // {
+        //     yaw = atan(center(0)/center(1))*180/M_PI;
+        // }
+        // else if(center(1)>=0 && center(0)<0)
+        // {
+        //     yaw = atan(center(0)/center(1))*180/M_PI;
+        // }
+        // else if(center(1)<0 && center(0)>0)
+        // {
+        //     yaw = 180+atan(center(0)/center(1))*180/M_PI;
+        // }
+        // else if(center(1)<0 && center(0)<0)
+        // {
+        //     yaw = -(180-atan(center(0)/center(1))*180/M_PI);
+        // }
+        
     }
     Fformation = Kp*(ed-ed1) + Ki*ed + Kd*(ed-2*ed1+ed2);
     ed2 = ed1;
     ed1 = ed;
-    for(int i=0;i<3;i++)
-    {
-        for(int j=0;j<3;j++)
-        {
-            if(abs(Fformation(i,j))>limitV && Fformation(i,j)<0)
-            {
-                Fformation(i,j)=-limitV;
-            }
-            else if(abs(Fformation(i,j))>limitV && Fformation(i,j)>0)
-            {
-                Fformation(i,j)=limitV; 
-            } 
-        }
-    }
+    // cout <<"0="<<yaw[0]<<endl;
+    // cout <<"1="<<yaw[0]<<endl;
 }
-void Controller::process()
+void Controller::process(float x,float y,float z,bool sw)
 {
     virtual_vel();
-    follower();
+    Uav_Circumcentre_move(x,y,z,sw);
+    null_space_behavior();
 }
 void Controller::null_space_behavior()
 {
-    // MatrixXf JacobP = MatrixXf::Zero(3,6);
-    // MatrixXf projN = MatrixXf::Zero(3,6);
+    MatrixXf tmp = MatrixXf::Zero(3,6);
+    Matrix3f JacoP = Matrix3f::Zero();
+    Matrix3f projN = Matrix3f::Zero();
+    Matrix3f I = Matrix3f::Identity();
 
-    // for(int i=0;i<6;i++)
-    // {
-    //     JacobP.col(i) = 
-    // }
+    for(int i=0;i<6;i++)
+    {
+        if(P_norm[i]<rsafe[i])
+        {
+            if((delta[i]>=0 && delta[i] < 90) || (delta[i]>=-90 && delta[i] < 0))
+            {
+                tmp.col(i) << -Uav_pos.col(i)/P_norm[i];
+            }
+            else
+            {
+                tmp.col(i) <<0,0,0;
+            }
+        }
+        else
+        {
+            tmp.col(i) <<0,0,0;
+        }
+    }
+    JacoP.col(0) << tmp.col(0)+tmp.col(1);
+    JacoP.col(1) << tmp.col(2)+tmp.col(3);
+    JacoP.col(2) << tmp.col(4)+tmp.col(5);
+    for(int i=0;i<3;i++)
+    {
+        projN << I - JacoP.col(i)*JacoP.col(i).transpose();
+        Fnsb.col(i) << Frep.col(i)+projN*Fformation.col(i);
+    }
 
-    // process();
-    // follower();
-    // float P[3][3],N1[3][3],N2[3][3],N3[3][3];
-    // P[0][0] = (Nuav[0].point.x-Nuav[1].point.x)/uav_dis[0] + (Nuav[0].point.x-Nuav[2].point.x)/uav_dis[1];
-    // P[0][1] = (Nuav[0].point.y-Nuav[1].point.y)/uav_dis[0] + (Nuav[0].point.y-Nuav[2].point.y)/uav_dis[1];
-    // P[0][2] = (Nuav[0].point.z-Nuav[1].point.z)/uav_dis[0] + (Nuav[0].point.z-Nuav[2].point.z)/uav_dis[1];
-
-    // P[1][0] = (Nuav[1].point.x-Nuav[0].point.x)/uav_dis[0] + (Nuav[1].point.x-Nuav[2].point.x)/uav_dis[2];
-    // P[1][1] = (Nuav[1].point.y-Nuav[0].point.y)/uav_dis[0] + (Nuav[1].point.y-Nuav[2].point.y)/uav_dis[2];
-    // P[1][2] = (Nuav[1].point.z-Nuav[0].point.z)/uav_dis[0] + (Nuav[1].point.z-Nuav[2].point.z)/uav_dis[2];
-
-    // P[2][0] = (Nuav[2].point.x-Nuav[0].point.x)/uav_dis[1] + (Nuav[2].point.x-Nuav[1].point.x)/uav_dis[2];
-    // P[2][1] = (Nuav[2].point.y-Nuav[0].point.y)/uav_dis[1] + (Nuav[2].point.y-Nuav[1].point.y)/uav_dis[2];
-    // P[2][2] = (Nuav[2].point.z-Nuav[0].point.z)/uav_dis[1] + (Nuav[2].point.z-Nuav[1].point.z)/uav_dis[2];
-
-    // N1[0][0]=1-P[0][0]*P[0][0];
-    // N1[0][1]=P[0][0]*P[0][1];
-    // N1[0][2]=P[0][0]*P[0][2];
-    // N1[1][0]=P[0][0]*P[0][1];
-    // N1[1][1]=1-P[0][1]*P[0][1];
-    // N1[1][2]=P[0][1]*P[0][2];
-    // N1[2][0]=P[0][0]*P[0][2];
-    // N1[2][1]=P[0][1]*P[0][2];
-    // N1[2][2]=1-P[0][2]*P[0][2];
-
-    // N2[0][0]=1-P[1][0]*P[1][0];
-    // N2[0][1]=P[1][0]*P[1][1];
-    // N2[0][2]=P[1][0]*P[1][2];
-    // N2[1][0]=P[1][0]*P[1][1];
-    // N2[1][1]=1-P[1][1]*P[1][1];
-    // N2[1][2]=P[1][1]*P[1][2];
-    // N2[2][0]=P[1][0]*P[1][2];
-    // N2[2][1]=P[1][1]*P[1][2];
-    // N2[2][2]=1-P[1][2]*P[1][2];
-
-    // N3[0][0]=1-P[2][0]*P[2][0];
-    // N3[0][1]=P[2][0]*P[2][1];
-    // N3[0][2]=P[2][0]*P[2][2];
-    // N3[1][0]=P[2][0]*P[2][1];
-    // N3[1][1]=1-P[2][1]*P[2][1];
-    // N3[1][2]=P[2][1]*P[2][2];
-    // N3[2][0]=P[2][0]*P[2][2];
-    // N3[2][1]=P[2][1]*P[2][2];
-    // N3[2][2]=1-P[2][2]*P[2][2];
-
-    // Nuav[0].vel.x = Cuav[0].vel.x+Fuav[0].vel.x*(N1[0][0]+N1[0][1]+N1[0][2]);
-    // Nuav[0].vel.y = Cuav[0].vel.y+Fuav[0].vel.y*(N1[1][0]+N1[1][1]+N1[1][2]);
-    // Nuav[0].vel.z = Cuav[0].vel.z+Fuav[0].vel.z*(N1[2][0]+N1[2][1]+N1[2][2]);
-
-    // Nuav[1].vel.x = Cuav[1].vel.x+Fuav[1].vel.x*(N2[0][0]+N2[0][1]+N2[0][2]);
-    // Nuav[1].vel.y = Cuav[1].vel.y+Fuav[1].vel.y*(N2[1][0]+N2[1][1]+N2[1][2]);
-    // Nuav[1].vel.z = Cuav[1].vel.z+Fuav[1].vel.z*(N2[2][0]+N2[2][1]+N2[2][2]);
-
-    // Nuav[2].vel.x = Cuav[2].vel.x+Fuav[2].vel.x*(N3[0][0]+N3[0][1]+N3[0][2]);
-    // Nuav[2].vel.y = Cuav[2].vel.y+Fuav[2].vel.y*(N3[1][0]+N3[1][1]+N3[1][2]);
-    // Nuav[2].vel.z = Cuav[2].vel.z+Fuav[2].vel.z*(N3[2][0]+N3[2][1]+N3[2][2]);
 }
+// void Controller::fuzzy_NSB()
+// {
+//     Fuzzy fuzzy;
+//     fuzzy.fx =0;
+// }

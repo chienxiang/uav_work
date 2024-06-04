@@ -633,21 +633,6 @@ practice_generate_messages_nodejs/fast:
 .PHONY : practice_generate_messages_nodejs/fast
 
 # Convenience name for target.
-practice/CMakeFiles/test_uav.dir/rule:
-	cd /home/user/uav_work/build && $(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/test_uav.dir/rule
-.PHONY : practice/CMakeFiles/test_uav.dir/rule
-
-# Convenience name for target.
-test_uav: practice/CMakeFiles/test_uav.dir/rule
-
-.PHONY : test_uav
-
-# fast build rule for target.
-test_uav/fast:
-	cd /home/user/uav_work/build && $(MAKE) -f practice/CMakeFiles/test_uav.dir/build.make practice/CMakeFiles/test_uav.dir/build
-.PHONY : test_uav/fast
-
-# Convenience name for target.
 practice/CMakeFiles/geographic_msgs_generate_messages_py.dir/rule:
 	cd /home/user/uav_work/build && $(MAKE) -f CMakeFiles/Makefile2 practice/CMakeFiles/geographic_msgs_generate_messages_py.dir/rule
 .PHONY : practice/CMakeFiles/geographic_msgs_generate_messages_py.dir/rule
@@ -1016,6 +1001,33 @@ src/lib/controller.cpp.s:
 	cd /home/user/uav_work/build && $(MAKE) -f practice/CMakeFiles/practice.dir/build.make practice/CMakeFiles/practice.dir/src/lib/controller.cpp.s
 .PHONY : src/lib/controller.cpp.s
 
+src/lib/fuzzy.o: src/lib/fuzzy.cpp.o
+
+.PHONY : src/lib/fuzzy.o
+
+# target to build an object file
+src/lib/fuzzy.cpp.o:
+	cd /home/user/uav_work/build && $(MAKE) -f practice/CMakeFiles/practice.dir/build.make practice/CMakeFiles/practice.dir/src/lib/fuzzy.cpp.o
+.PHONY : src/lib/fuzzy.cpp.o
+
+src/lib/fuzzy.i: src/lib/fuzzy.cpp.i
+
+.PHONY : src/lib/fuzzy.i
+
+# target to preprocess a source file
+src/lib/fuzzy.cpp.i:
+	cd /home/user/uav_work/build && $(MAKE) -f practice/CMakeFiles/practice.dir/build.make practice/CMakeFiles/practice.dir/src/lib/fuzzy.cpp.i
+.PHONY : src/lib/fuzzy.cpp.i
+
+src/lib/fuzzy.s: src/lib/fuzzy.cpp.s
+
+.PHONY : src/lib/fuzzy.s
+
+# target to generate assembly for a file
+src/lib/fuzzy.cpp.s:
+	cd /home/user/uav_work/build && $(MAKE) -f practice/CMakeFiles/practice.dir/build.make practice/CMakeFiles/practice.dir/src/lib/fuzzy.cpp.s
+.PHONY : src/lib/fuzzy.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -1096,33 +1108,6 @@ src/takeoff_n_land.s: src/takeoff_n_land.cpp.s
 src/takeoff_n_land.cpp.s:
 	cd /home/user/uav_work/build && $(MAKE) -f practice/CMakeFiles/takeoff_n_land.dir/build.make practice/CMakeFiles/takeoff_n_land.dir/src/takeoff_n_land.cpp.s
 .PHONY : src/takeoff_n_land.cpp.s
-
-src/test_uav.o: src/test_uav.cpp.o
-
-.PHONY : src/test_uav.o
-
-# target to build an object file
-src/test_uav.cpp.o:
-	cd /home/user/uav_work/build && $(MAKE) -f practice/CMakeFiles/test_uav.dir/build.make practice/CMakeFiles/test_uav.dir/src/test_uav.cpp.o
-.PHONY : src/test_uav.cpp.o
-
-src/test_uav.i: src/test_uav.cpp.i
-
-.PHONY : src/test_uav.i
-
-# target to preprocess a source file
-src/test_uav.cpp.i:
-	cd /home/user/uav_work/build && $(MAKE) -f practice/CMakeFiles/test_uav.dir/build.make practice/CMakeFiles/test_uav.dir/src/test_uav.cpp.i
-.PHONY : src/test_uav.cpp.i
-
-src/test_uav.s: src/test_uav.cpp.s
-
-.PHONY : src/test_uav.s
-
-# target to generate assembly for a file
-src/test_uav.cpp.s:
-	cd /home/user/uav_work/build && $(MAKE) -f practice/CMakeFiles/test_uav.dir/build.make practice/CMakeFiles/test_uav.dir/src/test_uav.cpp.s
-.PHONY : src/test_uav.cpp.s
 
 src/testfly.o: src/testfly.cpp.o
 
@@ -1222,7 +1207,6 @@ help:
 	@echo "... sensor_msgs_generate_messages_eus"
 	@echo "... practice"
 	@echo "... practice_generate_messages_nodejs"
-	@echo "... test_uav"
 	@echo "... geographic_msgs_generate_messages_py"
 	@echo "... sensor_msgs_generate_messages_lisp"
 	@echo "... sensor_msgs_generate_messages_nodejs"
@@ -1256,6 +1240,9 @@ help:
 	@echo "... src/lib/controller.o"
 	@echo "... src/lib/controller.i"
 	@echo "... src/lib/controller.s"
+	@echo "... src/lib/fuzzy.o"
+	@echo "... src/lib/fuzzy.i"
+	@echo "... src/lib/fuzzy.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
@@ -1265,9 +1252,6 @@ help:
 	@echo "... src/takeoff_n_land.o"
 	@echo "... src/takeoff_n_land.i"
 	@echo "... src/takeoff_n_land.s"
-	@echo "... src/test_uav.o"
-	@echo "... src/test_uav.i"
-	@echo "... src/test_uav.s"
 	@echo "... src/testfly.o"
 	@echo "... src/testfly.i"
 	@echo "... src/testfly.s"

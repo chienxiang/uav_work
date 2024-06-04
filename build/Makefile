@@ -1143,19 +1143,6 @@ practice_generate_messages_nodejs/fast:
 .PHONY : practice_generate_messages_nodejs/fast
 
 #=============================================================================
-# Target rules for targets named test_uav
-
-# Build rule for target.
-test_uav: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_uav
-.PHONY : test_uav
-
-# fast build rule for target.
-test_uav/fast:
-	$(MAKE) -f practice/CMakeFiles/test_uav.dir/build.make practice/CMakeFiles/test_uav.dir/build
-.PHONY : test_uav/fast
-
-#=============================================================================
 # Target rules for targets named geographic_msgs_generate_messages_py
 
 # Build rule for target.
@@ -2153,7 +2140,6 @@ help:
 	@echo "... sensor_msgs_generate_messages_eus"
 	@echo "... practice"
 	@echo "... practice_generate_messages_nodejs"
-	@echo "... test_uav"
 	@echo "... geographic_msgs_generate_messages_py"
 	@echo "... sensor_msgs_generate_messages_lisp"
 	@echo "... sensor_msgs_generate_messages_nodejs"

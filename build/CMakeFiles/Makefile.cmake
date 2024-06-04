@@ -532,7 +532,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "practice/CMakeFiles/sensor_msgs_generate_messages_eus.dir/DependInfo.cmake"
   "practice/CMakeFiles/practice.dir/DependInfo.cmake"
   "practice/CMakeFiles/practice_generate_messages_nodejs.dir/DependInfo.cmake"
-  "practice/CMakeFiles/test_uav.dir/DependInfo.cmake"
   "practice/CMakeFiles/geographic_msgs_generate_messages_py.dir/DependInfo.cmake"
   "practice/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/DependInfo.cmake"
   "practice/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/DependInfo.cmake"

@@ -3,8 +3,9 @@
 
 practice/CMakeFiles/testfly.dir/src/testfly.cpp.o
  /home/user/uav_work/devel/include/practice/information.h
- /home/user/uav_work/src/practice/include/coordination_transfer.h
  /home/user/uav_work/src/practice/include/practice/Uav.h
+ /home/user/uav_work/src/practice/include/practice/controller.h
+ /home/user/uav_work/src/practice/include/practice/fuzzy.h
  /home/user/uav_work/src/practice/src/testfly.cpp
  /opt/ros/noetic/include/geometry_msgs/Point.h
  /opt/ros/noetic/include/geometry_msgs/Pose.h
